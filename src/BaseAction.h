@@ -3,9 +3,25 @@
 
 class BaseAction
 {
+    private:
+        BaseAction* left;
+        BaseAction* right;
     public:
-	BaseAction() {};
-    virtual bool execute() = 0;
+        BaseAction() {};
+        BaseAction(BaseAction* left, BaseAction* right);
+        BaseAction* getLeft() {
+            return left;
+        }
+        BaseAction* getRight() {
+            return right;
+        }
+        void setRight(BaseAction* right) {
+            this->right = right;
+        }
+        void setLeft(BaseAction* left) {
+            this->left = left;
+        }
+        virtual bool execute() = 0;
 };
 
 #endif

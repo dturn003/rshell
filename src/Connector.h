@@ -5,13 +5,13 @@
 
 class Connector : public BaseAction
 {
-	protected:
-	BaseAction* left;
-	BaseAction* right;
+    protected:
+        BaseAction* left;
+        BaseAction* right;
 
     public:
-    Connector(BaseAction* left_temp, BaseAction* right_temp) : left(left_temp), right(right_temp) { };
-    virtual bool execute() = 0;
+        Connector(BaseAction* left_temp, BaseAction* right_temp) : left(left_temp), right(right_temp) { };
+        virtual bool execute() = 0;
 };
 
 #endif

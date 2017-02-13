@@ -13,7 +13,7 @@ class Command : public BaseAction
         vector<string> args;
 	
     public:
-        Command(string cmd_tmp, vector<BaseAction*> args_temp);
+        Command(string cmd_tmp, vector<string> args_temp);
         bool execute();
 };
 
