@@ -33,13 +33,16 @@ int main() {
                 
                 for (boost::tokenizer<boost::char_separator<char > >::iterator it = tokens.begin(); it != tokens.end(); ++it) {
                     if (it->at(0) == ';') {
-                        if (curr == 0) {
-                            BaseAction* left = new Command(currCommand, currArguments);
+                        BaseAction* left = new Command(currCommand, currArguments);
+                        if(curr == 0) {
                             curr = new AlwaysConnector(left, 0);
-                            if(root == 0) {
-                                root = curr;
-                            }
+                        }
+                        else {
+                            curr->setRight(new AlwaysConnector(left, 0));
                             curr = curr->getRight();
+                        }
+                        if(root == 0) {
+                            root = curr;
                         }
                         currCommand.clear();
                         currArguments.clear();
@@ -49,13 +52,17 @@ int main() {
                         it = tokens.end();
                     }
                     else if (it->at(0) == '&') {
+                        BaseAction* left = new Command(currCommand, currArguments);
+                        
                         if(curr == 0) {
-                            BaseAction* left = new Command(currCommand, currArguments);
                             curr = new AndConnector(left, 0);
-                            if (root == 0) {
-                                root = curr;
-                            }
+                        }
+                        else {
+                            curr->setRight(new AndConnector(left, 0));
                             curr = curr->getRight();
+                        }
+                        if(root == 0) {
+                            root = curr;
                         }
                         it++;
                         currCommand.clear();
@@ -63,14 +70,20 @@ int main() {
                         expectCommand = true;
                     }
                     else if (it->at(0) == '|') {
+                        BaseAction* left = new Command(currCommand, currArguments);
+ 
                         if(curr == 0) {
-                            BaseAction* left = new Command(currCommand, currArguments);
                             curr = new OrConnector(left, 0);
-                            if (root == 0) {
-                                root = curr;
-                            }
+                        }
+                        else {
+                            curr->setRight(new OrConnector(left, 0));
                             curr = curr->getRight();
                         }
+                        if(root == 0) {
+                            root = curr;
+                        }
+
+
                         it++;
                         currCommand.clear();
                         currArguments.clear();
@@ -88,7 +101,12 @@ int main() {
                     }
                 }
                 if(!expectCommand) {
-                    curr = new Command(currCommand,currArguments);
+                    if(curr == 0) {
+                        curr = new Command(currCommand, currArguments);
+                    }
+                    else {
+                        curr->setRight(new Command(currCommand, currArguments));
+                    }
                     if (root == 0) {
                         root = curr;
                     }
