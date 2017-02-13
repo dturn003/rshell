@@ -14,8 +14,13 @@ int main() {
 	while(!exit) {
 		std::cout << "$ ";
 		std::string input;
-		std::cin >> input;
+		std::getline(std::cin, input);
 		
+                //temporary
+                if(input == "exit") {
+                    exit = true;
+                }
+
 		std::string currCommand;
 		std::vector<std::string> currArguments;
                 
@@ -76,6 +81,7 @@ int main() {
                 if(!currArguments.empty()) {
                     curr = new Command(currCommand,currArguments);
                 }
+                root->execute();
 	}
 	return 0;
 }
