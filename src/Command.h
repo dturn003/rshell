@@ -8,12 +8,13 @@ using namespace std;
 
 class Command : public BaseAction
 {
-	private:
-		string cmd;
-		
+    private:
+        string cmd;
+        vector<string> args;
+	
     public:
-		Command(string cmd_tmp, vector<BaseAction*> args_temp);
-		bool execute();
+        Command(string cmd_tmp, vector<BaseAction*> args_temp);
+        bool execute();
 };
 
 #endif
