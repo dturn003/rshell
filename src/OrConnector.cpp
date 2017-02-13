@@ -2,12 +2,19 @@
 
 bool OrConnector::execute()
 {
-    if (left -> execute()) //execute left child
-    {
-        return true; //left was executed successfully, return true
+    bool out = false;
+    if(left) {
+        out = left->execute();
+        if (out) //execute left child
+        {
+            return true; //left was executed successfully, return true
+        }
+        else
+        {
+            if(right) {
+                 return right -> execute(); //execute right child and return it's value
+            }
+        }
     }
-    else
-    {
-        return right -> execute(); //execute right child and return it's value
-    }
+    return out;
 }

@@ -2,6 +2,12 @@
 
 bool AlwaysConnector::execute() 
 {
-    left -> execute(); //execute left child
-    return right -> execute(); //execute right child and return 
+    bool out = false;
+    if(left) {
+        out = left -> execute(); //execute left child
+    }
+    if(right) {
+        out = right -> execute(); //execute right child and return 
+    }
+    return out;
 }

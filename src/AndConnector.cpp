@@ -2,10 +2,13 @@
 
 bool AndConnector::execute()
 {
-	if (left->execute()) //execute left child
-	{
-		return right->execute(); //execute right child and return
+        bool out = false;
+        if(left) {
+            out = left->execute();
+	    if (out && right) //execute left child
+	    {
+		out = right->execute(); //execute right child and return
+	    }       
 	}
-	
-	return false;
+	return out;
 }
