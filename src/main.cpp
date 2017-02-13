@@ -36,6 +36,9 @@ int main() {
                         if (curr == 0) {
                             BaseAction* left = new Command(currCommand, currArguments);
                             curr = new AlwaysConnector(left, 0);
+                            if(root == 0) {
+                                root = curr;
+                            }
                             curr = curr->getRight();
                         }
                         currCommand.clear();
@@ -49,6 +52,9 @@ int main() {
                         if(curr == 0) {
                             BaseAction* left = new Command(currCommand, currArguments);
                             curr = new AndConnector(left, 0);
+                            if (root == 0) {
+                                root = curr;
+                            }
                             curr = curr->getRight();
                         }
                         it++;
@@ -60,6 +66,9 @@ int main() {
                         if(curr == 0) {
                             BaseAction* left = new Command(currCommand, currArguments);
                             curr = new OrConnector(left, 0);
+                            if (root == 0) {
+                                root = curr;
+                            }
                             curr = curr->getRight();
                         }
                         it++;
@@ -78,10 +87,15 @@ int main() {
                         }
                     }
                 }
-                if(!currArguments.empty()) {
+                if(!expectCommand) {
                     curr = new Command(currCommand,currArguments);
+                    if (root == 0) {
+                        root = curr;
+                    }
                 }
-                root->execute();
+                if(root) {
+                    root->execute();
+                }
 	}
 	return 0;
 }
