@@ -3,14 +3,9 @@
 
 #include "BaseAction.h"
 
-class Connector : public BaseAction
-{
-    protected:
-        BaseAction* left;
-        BaseAction* right;
-
+class Connector : public BaseAction {
     public:
-        Connector(BaseAction* left_temp, BaseAction* right_temp) : left(left_temp), right(right_temp) { };
+        Connector(BaseAction* left_temp, BaseAction* right_temp) : BaseAction(left_temp, right_temp) { };
         virtual bool execute() = 0;
 };
 

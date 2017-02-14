@@ -3,12 +3,12 @@
 
 class BaseAction
 {
-    private:
+    protected:
         BaseAction* left;
         BaseAction* right;
     public:
         BaseAction() {};
-        BaseAction(BaseAction* left, BaseAction* right);
+        BaseAction(BaseAction* left, BaseAction* right): left(left), right(right) {};
         BaseAction* getLeft() {
             return left;
         }
