@@ -49,7 +49,7 @@ int main() {
                         expectCommand = true;
                     }
                     else if (it->at(0) == '#') {
-                        it = tokens.end();
+                        break;
                     }
                     else if (it->at(0) == '&') {
                         BaseAction* left = new Command(currCommand, currArguments);
