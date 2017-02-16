@@ -2,19 +2,26 @@
 #define COMMAND_H
 
 #include "BaseAction.h"
-#include <string>
+#include <string.h>
 #include <vector>
+#include <iostream>
+
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
 using namespace std;
 
 class Command : public BaseAction
 {
     private:
-        string cmd;
-        vector<string> args;
-	
+	char* args[]; //args[0] is the command
+
     public:
-        Command(string cmd_tmp, vector<string> args_temp);
-        bool execute();
+	Command(const vector<string> &);
+	bool execute();
 };
 
 #endif
