@@ -3,13 +3,12 @@
 
 class BaseAction
 {
-    public:
+    public: 
         BaseAction() {};
-        virtual ~BaseAction();
-        virtual BaseAction* getLeft() = 0;
-        virtual BaseAction* getRight() = 0;
-        virtual void setRight(BaseAction* right) = 0;
-        virtual void setLeft(BaseAction* left) = 0;
+        virtual BaseAction* getLeft() {return 0;};
+        virtual BaseAction* getRight() {return 0;};
+        virtual void setRight(BaseAction* right) {};
+        virtual void setLeft(BaseAction* left) {};
         virtual bool execute() = 0;
 };
 
