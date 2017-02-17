@@ -1,19 +1,22 @@
 #include "OrConnector.h"
 
-bool OrConnector::execute()
+int OrConnector::execute()
 {
-    bool out = false;
+    int out = 0;
     if(left) {
         out = left->execute();
-        if (out) //execute left child
+        if (out == 1) //execute left child
         {
             return true; //left was executed successfully, return true
         }
-        else
+        else if(out == 0)
         {
             if(right) {
                  return right -> execute(); //execute right child and return it's value
             }
+        }
+        else {
+            return -1;
         }
     }
     return out;

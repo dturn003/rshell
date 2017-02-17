@@ -13,7 +13,7 @@ class Connector : public BaseAction {
             delete left;
             delete right;
         }
-        virtual bool execute() = 0;
+        virtual int execute() = 0;
         BaseAction* getLeft() {
             return left;
         }
