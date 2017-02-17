@@ -1,8 +1,8 @@
 #include "AndConnector.h"
 
-bool AndConnector::execute()
+int AndConnector::execute()
 {
-        bool out = false;
+        int out = 0;
         if(left) {
             out = left->execute();
 	    if (out && right) //execute left child
