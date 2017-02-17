@@ -31,6 +31,9 @@ bool Command::execute()
     }
     else if (pid == 0) //child process
     {
+        if (length == 1) {
+            exit(-1);
+        }
         execvp(args[0], args);
     }
     else //parent
