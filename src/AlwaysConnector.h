@@ -7,7 +7,7 @@ class AlwaysConnector : public Connector
 {
     public:
         AlwaysConnector(BaseAction* left_temp, BaseAction* right_temp) : Connector(left_temp, right_temp) { };
-        bool execute();
+        int execute();
 };
 
 #endif
