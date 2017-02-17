@@ -124,16 +124,14 @@ int main() {
         perror("gethostname() error");
     }
     
-    while(1) {
+    bool exit = false; 
+    while(!exit) {
         cout << username << "@" << hostname << "$ ";
         string input;
         getline(cin, input);
-    
-        if (input == "exit")
-            return 0;
             
         if(!parse(input)) {
-            break;
+            exit = true;
         }
     }
    
