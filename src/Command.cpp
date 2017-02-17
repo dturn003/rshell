@@ -37,7 +37,10 @@ bool Command::execute()
     {
         int status;
         wait(&status);
-        return WIFEXITED(status);
+        bool process = WIFEXITED(status);
+        if (!process)
+            perror("Command failed");
+        return process;
     }
 }
 
