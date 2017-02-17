@@ -15,9 +15,9 @@ Command::~Command()
 {
     for(unsigned i = 0; i < length; i++)
     {
-        delete [] arr[i];
+        delete [] args[i];
     }
-    delete [] arr;
+    delete [] args;
 }
 
 bool Command::execute()
