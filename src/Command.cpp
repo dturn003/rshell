@@ -1,4 +1,5 @@
 #include "Command.h"
+#include <stdlib.h>
 
 Command::Command(const vector<string> &v)
 {
@@ -22,6 +23,9 @@ Command::~Command()
 
 bool Command::execute()
 {
+    if (args[0] == "exit")
+        exit(1);
+    
     pid_t pid = fork();
     
     if (pid < 0) //failed
