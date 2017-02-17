@@ -13,7 +13,7 @@ using namespace std;
 using namespace boost;
 
 
-void parse(const string &input) {
+bool parse(const string &input) {
     
     BaseAction* root = 0;
     BaseAction* curr = root;
@@ -106,14 +106,17 @@ void parse(const string &input) {
         }
     }
     if(root) {
-        root->execute();
+        if(root->execute() == -1) {
+            return false;
+        }
     }
+    return true;
 }
 
 int main() {
     
     char* username = getlogin();
-    if(username) {
+    if(!username) {
         perror("getlogin() error");
     }
     char hostname[256];
@@ -129,7 +132,9 @@ int main() {
         if (input == "exit")
             return 0;
             
-        parse(input);
+        if(!parse(input)) {
+            break;
+        }
     }
    
     return 0;
