@@ -1,8 +1,8 @@
 #include "AlwaysConnector.h"
 
-bool AlwaysConnector::execute() 
+int AlwaysConnector::execute() 
 {
-    bool out = false;
+    int out = 0; //out is false
     if(left) {
         out = left -> execute(); //execute left child
     }
