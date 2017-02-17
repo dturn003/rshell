@@ -17,15 +17,16 @@ using namespace std;
 class Command : public BaseAction
 {
     private:
-	char** args; //args[0] is the command
 	unsigned length;
+	char** args; //args[0] is the command
+		
     public:
-	Command(const vector<string> &);
-	bool execute();
         void setLeft(BaseAction* left);
         void setRight(BaseAction* right);
         BaseAction* getLeft();
         BaseAction* getRight();
+	~Command();
+	bool execute();
 };
 
 #endif
