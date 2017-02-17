@@ -2,12 +2,22 @@
 
 Command::Command(const vector<string> &v)
 {
-    args = new char*[v.size() + 1];
-    for(unsigned i = 0; i < v.size(); i++) {
+    length = v.size() + 1;
+    args = new char*[length];
+    for(unsigned i = 0; i < length-1; i++) {
         args[i] = new char[v[i].size() + 1];
         strcpy(args[i], v[i].c_str());
     }
-    args[v.size()] = NULL;
+    args[length-1] = NULL;
+}
+
+Command::~Command()
+{
+    for(unsigned i = 0; i < length; i++)
+    {
+        delete [] arr[i];
+    }
+    delete [] arr;
 }
 
 bool Command::execute()
