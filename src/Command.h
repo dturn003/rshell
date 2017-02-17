@@ -2,9 +2,9 @@
 #define COMMAND_H
 
 #include "BaseAction.h"
-#include <string.h>
+#include <string>
 #include <vector>
-#include <iostream>
+#include <cstring>
 
 #include <stdio.h>
 #include <unistd.h>
@@ -21,11 +21,9 @@ class Command : public BaseAction
 	char** args; //args[0] is the command
 		
     public:
-        void setLeft(BaseAction* left);
-        void setRight(BaseAction* right);
-        BaseAction* getLeft();
-        BaseAction* getRight();
+	Command(const vector<string> &);
 	~Command();
+	
 	bool execute();
 };
 
