@@ -10,7 +10,7 @@ class BaseAction
         virtual BaseAction* getRight() {return 0;};
         virtual void setRight(BaseAction* right) {};
         virtual void setLeft(BaseAction* left) {};
-        virtual bool execute() = 0;
+        virtual int execute() = 0;
 };
 
 #endif
