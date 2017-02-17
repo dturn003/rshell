@@ -23,7 +23,8 @@ Command::~Command()
 
 int Command::execute() //returns 0 if command failed, 1 if command succeeded, and -1 if exit command
 {
-    if (args[0] == "exit")
+    string ex = "exit";
+    if (args[0] == ex.c_str())
     {
         return -1; //exit
     }
