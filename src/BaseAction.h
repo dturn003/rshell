@@ -5,7 +5,7 @@ class BaseAction
 {
     public: 
         BaseAction() {};
-        virtual ~BaseAction();
+        virtual ~BaseAction() { }
         virtual BaseAction* getLeft() {return 0;};
         virtual BaseAction* getRight() {return 0;};
         virtual void setRight(BaseAction* right) {};
