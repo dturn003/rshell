@@ -43,8 +43,3 @@ bool Command::execute()
         return process;
     }
 }
-
-void setLeft(BaseAction* left) { }
-void setRight(BaseAction* right) { }
-BaseAction* getLeft() { return 0; }
-BaseAction* getRight() { return 0; }
