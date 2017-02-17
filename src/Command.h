@@ -18,7 +18,7 @@ class Command : public BaseAction
 {
     private:
 	char** args; //args[0] is the command
-
+	unsigned length;
     public:
 	Command(const vector<string> &);
 	bool execute();
