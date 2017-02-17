@@ -7,6 +7,8 @@
 #include "Command.h"
 
 #include <boost/tokenizer.hpp>
+#include <unistd.h>
+
 using namespace std;
 using namespace boost;
 
@@ -110,8 +112,17 @@ void parse(const string &input) {
 
 int main() {
     
+    char* username = getlogin();
+    if(username) {
+        perror("getlogin() error");
+    }
+    char hostname[256];
+    if (gethostname(hostname, sizeof(hostname))) {
+        perror("gethostname() error");
+    }
+    
     while(1) {
-        cout << "$ ";
+        cout << username << "@" << hostname << "$ ";
         string input;
         getline(cin, input);
     
