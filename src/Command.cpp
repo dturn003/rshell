@@ -21,47 +21,55 @@ Command::~Command()
     delete [] args;
 }
 
-bool Command::execute()
+int Command::execute() //returns 0 if command failed, 1 if command succeeded, and -1 if exit command
 {
     if (args[0] == "exit")
-        exit(1);
-    
+    {
+        return -1; //exit
+    }
+        
     pid_t pid = fork();
     
     if (pid < 0) //failed
     {
         perror("Fork failed");
-        return false;
+        return 0; //false
     }
     else if (pid == 0) //child process
     {
-        if (length == 1) {
-            exit(-1);
+        if (length == 1) //empty list of arguments and commands
+        {
+            perror("Missing Command");
+            return 0; //false
         }
-        execvp(args[0], args);
+        else
+        {
+            execvp(args[0], args); //run program in bin
+        }
     }
     else //parent
     {
-        int status;
-        wait(&status);
+        int status; //status of child process
+        wait(&status); //waits for child process to finish
         
         if (WIFEXITED(status))
         {
             if (WEXITSTATUS(status) == 0) //program succeeded
             {
-                return true;
+                return 1; //true
             }
             else //program failed but exited normally
             {
                 perror("Command failed");
-                return false;
+                return 0; //false
             }
         }
         else //program exited abnormally
         {
             perror("Exited abnormally");
-            return false;
+            return 0; //false
         }
     }
-    return false;
+    
+    return 0; //default, should never reach here
 }
