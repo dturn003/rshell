@@ -42,4 +42,5 @@ bool Command::execute()
             perror("Command failed");
         return process;
     }
+    return false;
 }
