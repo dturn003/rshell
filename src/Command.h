@@ -17,7 +17,7 @@ using namespace std;
 class Command : public BaseAction
 {
     private:
-	char* args[]; //args[0] is the command
+	char** args; //args[0] is the command
 
     public:
 	Command(const vector<string> &);
