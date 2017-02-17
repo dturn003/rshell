@@ -25,8 +25,8 @@ bool Command::execute()
     }
     else //parent
     {
-        wait(NULL);
+        int status;
+        wait(&status);
+        return WIFEXITED(status)
     }
-        
-    return true;
 }
