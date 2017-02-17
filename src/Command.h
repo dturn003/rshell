@@ -24,7 +24,7 @@ class Command : public BaseAction
 	Command(const vector<string> &);
 	~Command();
 	
-	bool execute();
+	int execute();
 };
 
 #endif
