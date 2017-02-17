@@ -40,10 +40,24 @@ bool Command::execute()
     {
         int status;
         wait(&status);
-        bool process = WIFEXITED(status);
-        if (!process)
-            perror("Command failed");
-        return process;
+        
+        if (WIFEXITED(status))
+        {
+            if (WEXITSTATUS(status) == 0) //program succeeded
+            {
+                return true;
+            }
+            else //program failed but exited normally
+            {
+                perror("Command failed");
+                return false;
+            }
+        }
+        else //program exited abnormally
+        {
+            perror("Exited abnormally");
+            return false;
+        }
     }
     return false;
 }
