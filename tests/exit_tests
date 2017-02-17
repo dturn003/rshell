@@ -1,0 +1,4 @@
+exit
+echo "a" && exit
+ls ; exit
+git add || exit ; echo "skipped"
