@@ -16,12 +16,14 @@ using namespace std;
 
 class Command : public BaseAction
 {
-    private:
-	char** args; //args[0] is the command
-	unsigned length;
+	private:
+		unsigned length;
+		char** args; //args[0] is the command
+		
     public:
-	Command(const vector<string> &);
-	bool execute();
+		Command(const vector<string> &);
+		~Command();
+		bool execute();
 };
 
 #endif
