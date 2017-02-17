@@ -22,6 +22,10 @@ class Command : public BaseAction
     public:
 	Command(const vector<string> &);
 	bool execute();
+        void setLeft(BaseAction* left);
+        void setRight(BaseAction* right);
+        BaseAction* getLeft();
+        BaseAction* getRight();
 };
 
 #endif

@@ -40,3 +40,8 @@ bool Command::execute()
         return WIFEXITED(status);
     }
 }
+
+void setLeft(BaseAction* left) { }
+void setRight(BaseAction* right) { }
+BaseAction* getLeft() { return 0; }
+BaseAction* getRight() { return 0; }

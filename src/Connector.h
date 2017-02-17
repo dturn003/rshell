@@ -4,9 +4,28 @@
 #include "BaseAction.h"
 
 class Connector : public BaseAction {
+    protected:
+        BaseAction* left;
+        BaseAction* right;
     public:
-        Connector(BaseAction* left_temp, BaseAction* right_temp) : BaseAction(left_temp, right_temp) { };
+        Connector(BaseAction* left_temp, BaseAction* right_temp) : left(left_temp), right(right_temp) {}
+        virtual ~Connector() {
+            delete left;
+            delete right;
+        }
         virtual bool execute() = 0;
+        BaseAction* getLeft() {
+            return left;
+        }
+        BaseAction* getRight() {
+            return right;
+        }
+        void setLeft(BaseAction* left) {
+            this->left = left;
+        }
+        void setRight(BaseAction* right) {
+            this->right = right;
+        }
 };
 
 #endif
