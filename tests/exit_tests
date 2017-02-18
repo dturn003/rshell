@@ -2,5 +2,5 @@ exit
 echo "a" && exit
 echo "b" && exit && exit "c"
 ls ; exit
-git add || exit ; echo "skipped"
+false || exit ; echo "skipped"
 exit

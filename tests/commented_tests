@@ -4,4 +4,10 @@ echo "c" #|| echo "d"
 echo "1" #; echo "2"
 echo "3" # ; "echo 4"
 #echo "z"
+ls#-l -a
+ls# echo world # echo place
+echo mis#placed
+echo 56#; echo 64
+
 exit
+
