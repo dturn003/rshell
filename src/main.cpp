@@ -73,6 +73,7 @@ bool parse(const string &input) //returns false if exiting, otherwise true
         
         else if (it->at(0) == '&') //checks if AndConnector
         {
+            Tok::iterator original = it;
             if ((++it) != tokens.end() && it->at(0) == '&') //checks if next character is also &
             {
                 operands.push(new Command(args));
@@ -90,11 +91,12 @@ bool parse(const string &input) //returns false if exiting, otherwise true
 
                 prevConnector = new AndConnector(0, 0); //replace previous connect with OrConnector
             }
-            --it;
+            it = original;
         }
         
         else if (it -> at(0) == '|') //checks if OrConnector
         {
+            Tok::iterator original = it;
             if ((++it) != tokens.end() && it->at(0) == '|')
             {
                 operands.push(new Command(args));
@@ -112,7 +114,7 @@ bool parse(const string &input) //returns false if exiting, otherwise true
     
                 prevConnector = new OrConnector(0, 0); //replace previous connect with OrConnector
             }
-            --it;
+            it = original;
         }
         
         else //Else, add to args
