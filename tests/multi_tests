@@ -5,4 +5,5 @@ echo "e" || echo "f"
 false || echo "y"
 echo "1"; echo "2" && false || echo "3"
 false && echo bad || echo good
+ls -a; echo hello && mkdir bin || echo world; git status
 exit
