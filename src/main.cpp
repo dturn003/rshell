@@ -55,8 +55,11 @@ bool parse(const string &input) //returns false if exiting, otherwise true
             
         if (it->at(0) == ';') //checks if AlwaysConnector
         {
-            operands.push(new Command(args));
-            args.clear();
+            if (args.size() != 0)
+            {
+                operands.push(new Command(args));
+                args.clear();
+            }
             
             if (prevConnector)
             {
@@ -76,8 +79,11 @@ bool parse(const string &input) //returns false if exiting, otherwise true
             Tok::iterator original = it;
             if ((++it) != tokens.end() && it->at(0) == '&') //checks if next character is also &
             {
-                operands.push(new Command(args));
-                args.clear();
+                if (args.size() != 0)
+                {
+                    operands.push(new Command(args));
+                    args.clear();
+                }
                 
                 if (prevConnector)
                 {
@@ -99,8 +105,11 @@ bool parse(const string &input) //returns false if exiting, otherwise true
             Tok::iterator original = it;
             if ((++it) != tokens.end() && it->at(0) == '|')
             {
-                operands.push(new Command(args));
-                args.clear();
+                if (args.size() != 0)
+                {
+                    operands.push(new Command(args));
+                    args.clear();
+                }
                 
                 if (prevConnector)
                 {
@@ -123,7 +132,8 @@ bool parse(const string &input) //returns false if exiting, otherwise true
         }
     }
     
-    operands.push(new Command(args)); //pushes back last command
+    if (args.size() != 0)
+        operands.push(new Command(args)); //pushes back last command
     
     if (prevConnector) //connects last connector
     {
