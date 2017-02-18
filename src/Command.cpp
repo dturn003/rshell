@@ -1,5 +1,6 @@
 #include "Command.h"
 #include <stdlib.h>
+#include <string.h>
 
 Command::Command(const vector<string> &v)
 {
@@ -23,8 +24,8 @@ Command::~Command()
 
 int Command::execute() //returns 0 if command failed, 1 if command succeeded, and -1 if exit command
 {
-    string ex = "exit";
-    if (args[0] == ex.c_str())
+    string ex  = "exit";
+    if (strcmp(args[0], ex.c_str()) == 0)
     {
         return -1; //exit
     }
