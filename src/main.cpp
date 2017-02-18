@@ -5,122 +5,139 @@
 #include "AlwaysConnector.h"
 #include "OrConnector.h"
 #include "Command.h"
-
+#include <stack>
 #include <boost/tokenizer.hpp>
-#include <unistd.h>
-
 using namespace std;
 using namespace boost;
 
+//the stack represents the left and right nodes that need to be set into prevConnector
+//resetStack sets these connections and returns false if there is an error in tree construction
+bool resetStack(Connector* connect, stack<BaseAction*> &op)
+{
+    if (op.empty())
+    {
+        return false; //stack was empty, return false for bad user input
+    }
+    else
+    {
+        connect->setRight(op.top()); //sets right child of the connector
+        op.pop();
+        
+        if (op.empty())
+        {
+            return false; //stack was empty after popping only 1 element, bad user input
+        }
+        else
+        {
+            connect->setLeft(op.top());
+            op.pop();
+            op.push(connect); //pushes next node to build on tree
+            return true;
+        }
+    }
+}
 
-bool parse(const string &input) {
-    
-    BaseAction* root = 0;
-    BaseAction* curr = root;
-    
-    vector<string> currArguments; //vector of argument list
-    bool expectCommand = true; //flag to expect next command
+bool parse(const string &input) //returns false if exiting, otherwise true
+{
+    Connector* prevConnector = 0; //keeps track of the previous connector
+    stack<BaseAction*> operands; //operations to be connected with, always max 2 in the stack
+  
+    vector<string> args; //vector of argument list
     
     typedef tokenizer<char_separator<char > > Tok; //defines tokenizer object
     char_separator<char> sep(" ", ";&|#"); //splits up string input into tokens of connector and commands/arguments
     Tok tokens(input, sep); //list of tokens
     
-     for (Tok::iterator it = tokens.begin(); it != tokens.end(); ++it) {
-        if (it->at(0) == ';') {
-            BaseAction* temp = new Command(currArguments);
-            if(curr == 0) {
-                curr = new AlwaysConnector(temp, 0);
-                root = curr;
-            }
-            else {
-                if(curr->getLeft() == 0) {
-                    curr->setLeft(temp);
-                }
-                else if (curr->getRight() == 0) {
-                    curr->setRight(temp);
-                }
-                root = new AlwaysConnector(curr, 0);
-                curr = root;
-            }
-            currArguments.clear();
-            expectCommand = true;
-        }
-        else if (it->at(0) == '#') {
+    for (Tok::iterator it = tokens.begin(); it != tokens.end(); ++it) //goes through list of tokens
+    {
+        if (it->at(0) == '#') //stop parsing, it's a comment
             break;
-        }
-        else if (it->at(0) == '&') {
-            BaseAction* temp = new Command(currArguments);
             
-            if(curr == 0) {
-                curr = new AndConnector(temp, 0);
-                root = curr;
-            }
-            else {
-                if(curr->getLeft() == 0) {
-                    curr->setLeft(temp);
-                }
-                else if (curr->getRight() == 0) {
-                    curr->setRight(temp);
-                }
-                root = new AndConnector(curr, 0);
-                curr = root;
-            }
+        if (it->at(0) == ';') //checks if AlwaysConnector
+        {
+            operands.push_back(new Command(args));
+            args.clear();
             
-            it++;
-            currArguments.clear();
-            expectCommand = true;
-        }
-        else if (it->at(0) == '|') {
-            BaseAction* temp = new Command(currArguments);
-
-            if(curr == 0) {
-                curr = new OrConnector(temp, 0);
-                root = curr;
-            }
-            else {
-                if(curr->getLeft() == 0) {
-                    curr->setLeft(temp);
+            if (prevConnector)
+            {
+                bool syntax = resetStack(prevConnector, operands);
+                if (!syntax) //user input is incorrect
+                {
+                    perror("syntax error, expected a token");
+                    return true;
                 }
-                else if (curr->getRight() == 0) {
-                    curr->setRight(temp);
-                }
-                root = new OrConnector(curr, 0);
-                curr = root;
             }
 
-
-            it++;
-            currArguments.clear();
-            expectCommand = true;
+            prevConnector = new AlwaysConnector(0, 0); //replace previous connect with OrConnector
         }
-        else {
-            if (expectCommand) {
-                expectCommand = false;
-                currArguments.clear();
-                currArguments.push_back(*it);
+        
+        else if (it->at(0) == '&') //checks if AndConnector
+        {
+            if ((++it) != tokens.end() && it->at(0) == '&') //checks if next character is also &
+            {
+                operands.push_back(new Command(args));
+                args.clear();
+                
+                if (prevConnector)
+                {
+                    bool syntax = resetStack(prevConnector, operands);
+                    if (!syntax) //user input is incorrect
+                    {
+                        perror("syntax error, expected a token");
+                        return true;
+                    }
+                }
+
+                prevConnector = new AndConnector(0, 0); //replace previous connect with OrConnector
             }
-            else {
-                currArguments.push_back(*it);
+            --it;
+        }
+        
+        else if (it -> at(0) == '|') //checks if OrConnector
+        {
+            if ((++it) != tokens.end() && it->at(0) == '|')
+            {
+                operands.push_back(new Command(args));
+                args.clear();
+                
+                if (prevConnector)
+                {
+                    bool syntax = resetStack(prevConnector, operands);
+                    if (!syntax) //user input is incorrect
+                    {
+                        perror("syntax error, expected a token");
+                        return true;
+                    }
+                }
+    
+                prevConnector = new OrConnector(0, 0); //replace previous connect with OrConnector
             }
+            --it;
+        }
+        
+        else //Else, add to args
+        {
+            args.push_back(*it);
         }
     }
     
-    if(!expectCommand) {
-        if(curr == 0) {
-            curr = new Command(currArguments);
-        }
-        else {
-            curr->setRight(new Command(currArguments));
-        }
-        if (root == 0) {
-            root = curr;
-        }
-    }
-    if(root) {
-        if(root->execute() == -1) {
-            return false;
+    operands.push_back(new Command(args)); //pushes back last command
+    
+    if (prevConnector) //connects last connector
+    {
+        bool syntax = resetStack(prevConnector, operands);
+        if (!syntax) //user input is incorrect
+        {
+            perror("syntax error, expected a token");
+            return true;
         }
     }
+    
+    if (operands.top()->execute() == -1)
+    {
+        return false;
+    }
+    
     return true;
 }
 
