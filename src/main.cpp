@@ -27,18 +27,21 @@ bool parse(const string &input) {
     
      for (Tok::iterator it = tokens.begin(); it != tokens.end(); ++it) {
         if (it->at(0) == ';') {
-            BaseAction* left = new Command(currArguments);
+            BaseAction* temp = new Command(currArguments);
             if(curr == 0) {
-                curr = new AlwaysConnector(left, 0);
-            }
-            else {
-                curr->setRight(new AlwaysConnector(left, 0));
-                curr = curr->getRight();
-            }
-            if(root == 0) {
+                curr = new AlwaysConnector(temp, 0);
                 root = curr;
             }
-
+            else {
+                if(curr->getLeft() == 0) {
+                    curr->setLeft(temp);
+                }
+                else if (curr->getRight() == 0) {
+                    curr->setRight(temp);
+                }
+                root = new AlwaysConnector(curr, 0);
+                curr = root;
+            }
             currArguments.clear();
             expectCommand = true;
         }
@@ -46,17 +49,21 @@ bool parse(const string &input) {
             break;
         }
         else if (it->at(0) == '&') {
-            BaseAction* left = new Command(currArguments);
+            BaseAction* temp = new Command(currArguments);
             
             if(curr == 0) {
-                curr = new AndConnector(left, 0);
+                curr = new AndConnector(temp, 0);
+                root = curr;
             }
             else {
-                curr->setRight(new AndConnector(left, 0));
-                curr = curr->getRight();
-            }
-            if(root == 0) {
-                root = curr;
+                if(curr->getLeft() == 0) {
+                    curr->setLeft(temp);
+                }
+                else if (curr->getRight() == 0) {
+                    curr->setRight(temp);
+                }
+                root = new AndConnector(curr, 0);
+                curr = root;
             }
             
             it++;
@@ -64,17 +71,21 @@ bool parse(const string &input) {
             expectCommand = true;
         }
         else if (it->at(0) == '|') {
-            BaseAction* left = new Command(currArguments);
+            BaseAction* temp = new Command(currArguments);
 
             if(curr == 0) {
-                curr = new OrConnector(left, 0);
+                curr = new OrConnector(temp, 0);
+                root = curr;
             }
             else {
-                curr->setRight(new OrConnector(left, 0));
-                curr = curr->getRight();
-            }
-            if(root == 0) {
-                root = curr;
+                if(curr->getLeft() == 0) {
+                    curr->setLeft(temp);
+                }
+                else if (curr->getRight() == 0) {
+                    curr->setRight(temp);
+                }
+                root = new OrConnector(curr, 0);
+                curr = root;
             }
 
 
