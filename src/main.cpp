@@ -145,7 +145,7 @@ bool parse(const string &input) //returns false if exiting, otherwise true
         }
     }
     
-    if (operands.top()->execute() == -1)
+    if (!operands.empty() && operands.top()->execute() == -1)
     {
         return false;
     }
