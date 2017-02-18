@@ -24,6 +24,12 @@ Command::~Command()
 
 int Command::execute() //returns 0 if command failed, 1 if command succeeded, and -1 if exit command
 {
+    if (length == 1) //empty list of arguments and commands
+    {
+        //perror("Missing Command");
+        return 0; //false
+    }
+    
     string ex  = "exit";
     if (strcmp(args[0], ex.c_str()) == 0)
     {
@@ -39,15 +45,7 @@ int Command::execute() //returns 0 if command failed, 1 if command succeeded, an
     }
     else if (pid == 0) //child process
     {
-        if (length == 1) //empty list of arguments and commands
-        {
-            perror("Missing Command");
-            return 0; //false
-        }
-        else
-        {
-            execvp(args[0], args); //run program in bin
-        }
+        execvp(args[0], args); //run program in bin
     }
     else //parent
     {
