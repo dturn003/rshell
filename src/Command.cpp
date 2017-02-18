@@ -50,7 +50,8 @@ int Command::execute() //returns 0 if command failed, 1 if command succeeded, an
     else //parent
     {
         int status; //status of child process
-        wait(&status); //waits for child process to finish
+        if (wait(&status) < 0) //waits for child process to finish
+            perror("Wait has failed");
         
         if (WIFEXITED(status))
         {
