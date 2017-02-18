@@ -63,7 +63,7 @@ bool parse(const string &input) //returns false if exiting, otherwise true
                 bool syntax = resetStack(prevConnector, operands);
                 if (!syntax) //user input is incorrect
                 {
-                    perror("syntax error, expected a token");
+                    cout << "syntax error" << endl;
                     return true;
                 }
             }
@@ -83,7 +83,7 @@ bool parse(const string &input) //returns false if exiting, otherwise true
                     bool syntax = resetStack(prevConnector, operands);
                     if (!syntax) //user input is incorrect
                     {
-                        perror("syntax error, expected a token");
+                        cout << "syntax error" << endl;
                         return true;
                     }
                 }
@@ -105,7 +105,7 @@ bool parse(const string &input) //returns false if exiting, otherwise true
                     bool syntax = resetStack(prevConnector, operands);
                     if (!syntax) //user input is incorrect
                     {
-                        perror("syntax error, expected a token");
+                        cout << "syntax error" << endl;
                         return true;
                     }
                 }
@@ -128,7 +128,7 @@ bool parse(const string &input) //returns false if exiting, otherwise true
         bool syntax = resetStack(prevConnector, operands);
         if (!syntax) //user input is incorrect
         {
-            perror("syntax error, expected a token");
+            cout << "syntax error" << endl;
             return true;
         }
     }
