@@ -1,4 +1,6 @@
 exit
 echo "a" && exit
+echo "b" && exit && exit "c"
 ls ; exit
 git add || exit ; echo "skipped"
+exit

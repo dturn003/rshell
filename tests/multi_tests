@@ -4,3 +4,4 @@ false && echo "z"
 echo "e" || echo "f"
 false || echo "y"
 echo "1"; echo "2" && false || echo "3"
+exit
