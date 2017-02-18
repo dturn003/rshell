@@ -2,5 +2,6 @@ ls
 echo "a"
 echo here is a bunch of words that tests many arguments
 ls -l
+echo ls false git status testing if other commands are arguments
 
 exit
