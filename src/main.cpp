@@ -55,7 +55,7 @@ bool parse(const string &input) //returns false if exiting, otherwise true
             
         if (it->at(0) == ';') //checks if AlwaysConnector
         {
-            operands.push_back(new Command(args));
+            operands.push(new Command(args));
             args.clear();
             
             if (prevConnector)
@@ -75,7 +75,7 @@ bool parse(const string &input) //returns false if exiting, otherwise true
         {
             if ((++it) != tokens.end() && it->at(0) == '&') //checks if next character is also &
             {
-                operands.push_back(new Command(args));
+                operands.push(new Command(args));
                 args.clear();
                 
                 if (prevConnector)
@@ -97,7 +97,7 @@ bool parse(const string &input) //returns false if exiting, otherwise true
         {
             if ((++it) != tokens.end() && it->at(0) == '|')
             {
-                operands.push_back(new Command(args));
+                operands.push(new Command(args));
                 args.clear();
                 
                 if (prevConnector)
@@ -121,7 +121,7 @@ bool parse(const string &input) //returns false if exiting, otherwise true
         }
     }
     
-    operands.push_back(new Command(args)); //pushes back last command
+    operands.push(new Command(args)); //pushes back last command
     
     if (prevConnector) //connects last connector
     {
