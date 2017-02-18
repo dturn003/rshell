@@ -61,13 +61,13 @@ int Command::execute() //returns 0 if command failed, 1 if command succeeded, an
             }
             else //program failed but exited normally
             {
-                perror("Command failed");
+                //perror("Command failed");
                 return 0; //false
             }
         }
         else //program exited abnormally
         {
-            perror("Exited abnormally");
+            //perror("Exited abnormally");
             return 0; //false
         }
     }
