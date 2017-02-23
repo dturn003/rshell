@@ -218,17 +218,21 @@ static bool Parser::parse(const string &input) //returns false if exiting, other
     
     if (!connects.empty()) //remaining left parenthesis, no right parenthesis in user input
     {
-        deleteTree(connects.top());
+        while (!operands.empty())
+        {
+            deleteTree(operands.top());
+            operands.pop();
+        }
         return true; 
     }
     
     if (operands.top()->execute() == -1) //execute, if exit, return false
     {
-        deleteTree(connects.top());
+        deleteTree(operands.top());
         return false;
     }
     
-    deleteTree(connects.top());
+    deleteTree(operands.top());
     return true;
 }
 
