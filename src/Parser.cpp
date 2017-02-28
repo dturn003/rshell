@@ -43,7 +43,7 @@ void Parser::deleteTree(BaseAction* curr)
 //helper function for parse
 //creates new command based on given args vector and pushes it onto operands stack
 //clears args vector
-void Parser::pushCommand(stack<BaseAction*> operands, vector<string> &args)
+void Parser::pushCommand(stack<BaseAction*> &operands, vector<string> &args)
 {
     if (args.size() != 0) //checks if empty command
     {
@@ -101,14 +101,14 @@ bool Parser::cycle(stack<Operator> &connects, stack<BaseAction*> &operands)
 //checks if char delimiter link appears twice in a row
 //if yes, return true, otherwise false
 //assumes iterator it starts as valid i.e. not == to last or beyond last
-bool Parser::checkDouble(char link, Tok::iterator it, Tok::iterator last)
+bool Parser::checkDouble(char link, Tok::iterator &it, Tok::iterator last)
 {
-    if (it->at(0) != link)
+    if (it == last) //if it is already last
     {
         return false;
     }
     
-    if ( ( (++it) != last ) && it->at(0) == '\0' ) //checks if next character is an empty token
+    if ( ( (++it) != last ) && it->empty() ) //checks if next character is an empty token
     {
         if ( ( (++it) != last ) && it->at(0) == link ) //checks if same character
         {
@@ -130,7 +130,7 @@ bool Parser::checkDouble(char link, Tok::iterator it, Tok::iterator last)
 //if input is not valid, returns true to cycle back for more user input, else exit
 //true = continue to get user input, false = exit
 //utilizes infix evaluation algorithm to determine parsing
-static bool Parser::parse(const string &input) //returns false if exiting, otherwise true
+bool Parser::parse(const string &input) //returns false if exiting, otherwise true
 {
     stack<Operator> connects;
     stack<BaseAction*> operands; //operations to be connected with, always max 2 in the stack
@@ -182,25 +182,41 @@ static bool Parser::parse(const string &input) //returns false if exiting, other
                 }
                 connects.push(Always);
             }
-            else if (checkDouble('&', it, last)) //checks if AndConnector
+            else if (link == '&') //checks if AndConnector
             {
-                pushCommand(operands, args); //clears args, pushes new command onto operands stack
-                
-                if (!cycle(connects, operands))
+                if (checkDouble('&', it, last))
                 {
+                    pushCommand(operands, args); //clears args, pushes new command onto operands stack
+    
+                    if (!cycle(connects, operands))
+                    {
+                        return true;
+                    }
+                    connects.push(And); //pushes AndConnector onto connects
+                }
+                else
+                {
+                    
                     return true;
                 }
-                connects.push(And); //pushes AndConnector onto connects
+                
             }
-            else if (checkDouble('|', it, last)) //checks if OrConnector
+            else if (link == '|') //checks if OrConnector
             {
-                pushCommand(operands, args); //clears args, pushes new command onto operands stack
-                
-                if (!cycle(connects, operands))
+                if (checkDouble('|', it, last))
+                {
+                    pushCommand(operands, args); //clears args, pushes new command onto operands stack
+    
+                    if (!cycle(connects, operands))
+                    {
+                        return true;
+                    }
+                    connects.push(Or); //pushes AndConnector onto connects
+                }
+                else
                 {
                     return true;
                 }
-                connects.push(Or); //pushes OrConnector onto connects
             }
             else //Else, add to args vector
             {
@@ -218,11 +234,7 @@ static bool Parser::parse(const string &input) //returns false if exiting, other
     
     if (!connects.empty()) //remaining left parenthesis, no right parenthesis in user input
     {
-        while (!operands.empty())
-        {
-            deleteTree(operands.top());
-            operands.pop();
-        }
+        deleteTree(operands.top());
         return true; 
     }
     
