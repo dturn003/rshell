@@ -238,6 +238,11 @@ bool Parser::parse(const string &input) //returns false if exiting, otherwise tr
         return true; 
     }
     
+    if (operands.empty()) //empty commands
+    {
+        return true;
+    }
+    
     if (operands.top()->execute() == -1) //execute, if exit, return false
     {
         deleteTree(operands.top());
