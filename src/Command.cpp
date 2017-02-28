@@ -26,7 +26,7 @@ int Command::execute() //returns 0 if command failed, 1 if command succeeded, an
 {
     if (length == 1) //empty list of arguments and commands
     {
-        //perror("Missing Command");
+        cout << "Missing Command" << endl;
         return 0; //false
     }
     

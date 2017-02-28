@@ -12,19 +12,21 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#include <iostream>
+
 using namespace std;
 
 class Command : public BaseAction
 {
     private:
-	unsigned length;
-	char** args; //args[0] is the command
-		
+    unsigned length;
+    char** args; //args[0] is the command
+        
     public:
-	Command(const vector<string> &);
-	~Command();
-	
-	int execute();
+    Command(const vector<string> &);
+    ~Command();
+    
+    int execute();
 };
 
 #endif
