@@ -5,17 +5,18 @@ TestCommand::TestCommand(const vector<string> &v) : Command(v) {
 }
 
 int TestCommand::execute() {
+    //checks if format is correct for TestCommand object
     if (length != 4) {
         cout << "Improper input: test command" << endl;
     }
     
-    struct stat buf; //struct returned by stat
-    int statOut = stat(args[2], &buf);
+    struct stat buf; //struct returned by stat function
+    int statOut = stat(args[2], &buf); //stat() takes in 1. path for file/directory and 2. struct reference to return to
     if (statOut < 0) {
         perror("stat() failed");
     }
 
-    
+    //tests existence
     if (flag == 'e') {
         if (statOut == 0) {
             cout << "(False)" << endl;
@@ -26,7 +27,7 @@ int TestCommand::execute() {
             return 1;
         }
     }
-    else if (flag == 'f') {
+    else if (flag == 'f') { //tests if regular file
         if (statOut == 0) {
             cout << "(False)" << endl;
             return 0;
@@ -35,7 +36,7 @@ int TestCommand::execute() {
             return S_ISREG(buf.st_mode);
         }
     }
-    else if (flag == 'd') {
+    else if (flag == 'd') { //tests if directory
         if (statOut == 0) {
             cout << "(False)" << endl;
             return 0;
