@@ -47,7 +47,19 @@ void Parser::pushCommand(stack<BaseAction*> &operands, vector<string> &args)
 {
     if (args.size() != 0) //checks if empty command
     {
-        operands.push(new Command(args));
+        if (args.at(0) == "exit")
+        {
+            operands.push(new ExitCommand());
+        }
+        if (args.at(0) == '[' && args.at(size() - 1) == ']')
+        {
+            args.push_front("test");
+            operands.push(new TestCommand(args));
+        }
+        else
+        {
+             operands.push(new Command(args));
+        }
         args.clear();
     }
 }
@@ -252,6 +264,8 @@ bool Parser::parse(const string &input) //returns false if exiting, otherwise tr
     deleteTree(operands.top());
     return true;
 }
+
+
 
 /*
 //helper function for cycle
