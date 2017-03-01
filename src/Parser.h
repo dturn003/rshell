@@ -35,7 +35,7 @@ class Parser
     public:
         
         Parser() {}; //default constructor
-        static bool parse(const string &input); //returns false if exiting, otherwise true
+        bool parse(const string &input); //returns false if exiting, otherwise true
 };
 
 #endif
