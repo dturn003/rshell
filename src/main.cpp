@@ -23,9 +23,7 @@ int main() {
         string input;
         getline(cin, input);
             
-        if(!filter.parse(input)) {
-            exit = true;
-        }
+        exit = !filter.parse(input);
     }
    
     return 0;
