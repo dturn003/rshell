@@ -51,7 +51,11 @@ void Parser::pushCommand(stack<BaseAction*> &operands, vector<string> &args)
         {
             operands.push(new ExitCommand());
         }
-        if (args.at(0) == "[" && args.at(args.size() - 1) == "]")
+        else if (args.at(0) == "test")
+        {
+            operands.push(new TestCommand(args));
+        }
+        else if (args.at(0) == "[" && args.at(args.size() - 1) == "]")
         {
             args.insert(args.begin(), "test");
             operands.push(new TestCommand(args));
@@ -246,7 +250,7 @@ bool Parser::parse(const string &input) //returns false if exiting, otherwise tr
     
     if (!connects.empty()) //remaining left parenthesis, no right parenthesis in user input
     {
-        deleteTree(operands.top());
+        //deleteTree(operands.top());
         return true; 
     }
     
@@ -257,11 +261,11 @@ bool Parser::parse(const string &input) //returns false if exiting, otherwise tr
     
     if (operands.top()->execute() == -1) //execute, if exit, return false
     {
-        deleteTree(operands.top());
+        //deleteTree(operands.top());
         return false;
     }
     
-    deleteTree(operands.top());
+    //deleteTree(operands.top());
     return true;
 }
 
