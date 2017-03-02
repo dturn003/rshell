@@ -1,5 +1,7 @@
+#include "ExitCommand.h"
+
 int ExitCommand::execute() {
     return -1;
 }
 
-ExitCommand() : BaseAction() {}
+ExitCommand::ExitCommand() : BaseAction() {}
