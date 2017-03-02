@@ -8,14 +8,15 @@ TestCommand::TestCommand(const vector<string> &v) : Command(v) {
 }
 
 int TestCommand::execute() {
-    //checks if format is correct for TestCommand object
-    if (length != 4) {
-        cout << "Improper input: test command" << endl;
-    }
     //checks if default flag should be used as user did not input one
     if (length == 3) {
         flag = 'e';
     }
+    else if (length != 4) {//checks if format is correct for TestCommand object
+        cout << "Improper input: test command" << endl;
+        return 0;
+    }
+    
     
     struct stat buf; //struct returned by stat function
     int statOut = stat(args[2], &buf); //stat() takes in 1. path for file/directory and 2. struct reference to return to
