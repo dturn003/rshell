@@ -1,31 +1,32 @@
 #include <sys/stat.h>
 #include <iostream>
+#include <stdio.h>
 
 #include "TestCommand.h"
 
-TestCommand::TestCommand(const vector<string> &v) : Command(v) {
-    this->flag = args[1][1];
+TestCommand::TestCommand(const vector<string> &v) {
+    if(v.size() == 3) { //input like regular command: test flag path
+        flag = v.at(1).at(1);
+        path = v.at(2);
+    }
+    else if (v.size() == 2) {//input as []: flag path
+        flag = v.at(0).at(1);
+        path = v.at(1);
+    }
+    else if (v.size() == 1){//input as [] with implicit flag: path
+        flag = 'e';
+        path = v.at(0);
+    }
+    else {//any other amount of input is wrong
+        cout << "Improper input: test command" << endl;
+    }
 }
 
 int TestCommand::execute() {
-    //checks if default flag should be used as user did not input one
-    if (length == 3) {
-        flag = 'e';
-    }
-    else if (length != 4) {//checks if format is correct for TestCommand object
-        cout << "Improper input: test command" << endl;
-        return 0;
-    }
-    
     
     struct stat buf; //struct returned by stat function
-    int statOut;
-    if(length == 3) {
-        statOut = stat(args[1], &buf);
-    }
-    else {
-        statOut = stat(args[2], &buf); //stat() takes in 1. path for file/directory and 2. struct reference to return to
-    }
+    int statOut = stat(path.c_str(), &buf);
+
     /*
     if (statOut < 0) {
         perror("stat() failed");
@@ -37,6 +38,7 @@ int TestCommand::execute() {
     //functions same way for each flag
     if (statOut != 0) {
             cout << "(False)" << endl;
+            perror("stat() failed");
             return 0;
     }
     

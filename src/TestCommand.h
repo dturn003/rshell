@@ -1,21 +1,26 @@
 #ifndef TESTCOMMAND_H
 #define TESTCOMMAND_H
 
-#include "Command.h"
+#include "BaseAction.h"
+
+#include <vector>
+#include <string>
+
 using namespace std;
 
-class TestCommand : public Command {
+class TestCommand : public BaseAction {
     private:
         char flag;
+        string path;
     public:
         int execute();
         
         /*
-        args[0] = test
-        args[1] = flag (-e, -f, -d)
-        args[>2] = directory/file to check
+        args.size() == 3 -> "test" flag path
+        args.size() == 2 -> flag path
+        args.size() == 1 -> path
         */
-        TestCommand(const vector<string> &);
+        TestCommand(const vector<string> &args);
 };
 
 #endif
