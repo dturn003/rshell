@@ -57,7 +57,8 @@ void Parser::pushCommand(stack<BaseAction*> &operands, vector<string> &args)
         }
         else if (args.at(0) == "[" && args.at(args.size() - 1) == "]")
         {
-            args.insert(args.begin(), "test");
+            args.erase(args.begin());//remove brackets from args
+            args.pop_back();
             operands.push(new TestCommand(args));
         }
         else
