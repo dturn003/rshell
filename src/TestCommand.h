@@ -2,6 +2,7 @@
 #define TESTCOMMAND_H
 
 #include "Command.h"
+using namespace std;
 
 class TestCommand : public Command {
     private:

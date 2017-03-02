@@ -1,4 +1,7 @@
 #include <sys/stat.h>
+#include <iostream>
+
+#include "TestCommand.h"
 
 TestCommand::TestCommand(const vector<string> &v) : Command(v) {
     this->flag = args[1][1];
