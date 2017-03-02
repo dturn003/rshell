@@ -1,6 +1,8 @@
 #ifndef TESTCOMMAND_H
 #define TESTCOMMAND_H
 
+#include "Command.h"
+
 class TestCommand : public Command {
     private:
         char flag;
