@@ -2,6 +2,8 @@
 #define PARSER_H
 
 #include "BaseAction.h"
+#include "ExitCommand.h"
+#include "TestCommand.h"
 #include "Command.h"
 #include "Connector.h"
 #include "AndConnector.h"
@@ -35,7 +37,7 @@ class Parser
     public:
         
         Parser() {}; //default constructor
-        bool parse(const string &input); //returns false if exiting, otherwise true
+        static bool parse(const string &input); //returns false if exiting, otherwise true
 };
 
 #endif
