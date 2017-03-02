@@ -27,7 +27,7 @@ class Parser
         //bool cycle(Operator curr);
         
         void deleteTree(BaseAction* curr);
-        bool checkDouble(char link, Tok::iterator it, Tok::iterator last);
+        bool checkDouble(char link, Tok::iterator &it, Tok::iterator last);
         bool process(stack<Operator> &connects, stack<BaseAction*> &operands); //helper function for cycle
         bool cycle(stack<Operator> &connects, stack<BaseAction*> &operands);
         

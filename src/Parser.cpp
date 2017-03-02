@@ -51,7 +51,7 @@ void Parser::pushCommand(stack<BaseAction*> &operands, vector<string> &args)
         {
             operands.push(new ExitCommand());
         }
-        if (args.at(0) == "[" && args.at(size() - 1) == "]")
+        if (args.at(0) == "[" && args.at(args.size() - 1) == "]")
         {
             args.insert(args.begin(), "test");
             operands.push(new TestCommand(args));
