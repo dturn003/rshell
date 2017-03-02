@@ -47,13 +47,13 @@ void Parser::pushCommand(stack<BaseAction*> &operands, vector<string> &args)
 {
     if (args.size() != 0) //checks if empty command
     {
-        if (args.at(0).at(0) == "exit")
+        if (args.at(0) == "exit")
         {
             operands.push(new ExitCommand());
         }
-        if (args.at(0).at(0) == "[" && args.at(size() - 1) == "]")
+        if (args.at(0) == "[" && args.at(size() - 1) == "]")
         {
-            args.push_front("test");
+            args.insert(args.begin(), "test");
             operands.push(new TestCommand(args));
         }
         else
