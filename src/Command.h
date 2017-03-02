@@ -18,15 +18,15 @@ using namespace std;
 
 class Command : public BaseAction
 {
-    private:
-    unsigned length;
-    char** args; //args[0] is the command
+    protected:
+        unsigned length;
+        char** args; //args[0] is the command
         
     public:
-    Command(const vector<string> &);
-    ~Command();
-    
-    int execute();
+        Command(const vector<string> &);
+        ~Command();
+        
+        int execute();
 };
 
 #endif
