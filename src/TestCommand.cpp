@@ -9,6 +9,10 @@ int TestCommand::execute() {
     if (length != 4) {
         cout << "Improper input: test command" << endl;
     }
+    //checks if default flag should be used as user did not input one
+    if (length == 3) {
+        flag = 'e';
+    }
     
     struct stat buf; //struct returned by stat function
     int statOut = stat(args[2], &buf); //stat() takes in 1. path for file/directory and 2. struct reference to return to
@@ -19,18 +23,21 @@ int TestCommand::execute() {
     }
     */
     
+    //if directory/file doesn't exist
+    //functions same way for each flag
     if (statOut != 0) {
             cout << "(False)" << endl;
             return 0;
     }
     
-    //tests existence
+    //if directory/file does exist
+    //tests flag condition
     if (flag == 'e') {
         cout << "(True)" << endl;
         return 1;
     }
     else if (flag == 'f') { //tests if regular file
-        if(S_ISREG(buf.st_mode)) {
+        if(S_ISREG(buf.st_mode)) {//is regular file macro
             cout << "(True)" << endl;
             return 1;
         }
@@ -40,7 +47,7 @@ int TestCommand::execute() {
         }
     }
     else if (flag == 'd') { //tests if directory
-        if(S_ISDIR(buf.st_mode)) {
+        if(S_ISDIR(buf.st_mode)) {//is directory macro
             cout << "(True)" << endl;
             return 1;
         }
