@@ -19,7 +19,13 @@ int TestCommand::execute() {
     
     
     struct stat buf; //struct returned by stat function
-    int statOut = stat(args[2], &buf); //stat() takes in 1. path for file/directory and 2. struct reference to return to
+    int statOut;
+    if(length == 3) {
+        statOut = stat(args[1], &buf);
+    }
+    else {
+        statOut = stat(args[2], &buf); //stat() takes in 1. path for file/directory and 2. struct reference to return to
+    }
     /*
     if (statOut < 0) {
         perror("stat() failed");
