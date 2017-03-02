@@ -9,9 +9,15 @@ TestCommand::TestCommand(const vector<string> &v) {
         flag = v.at(1).at(1);
         path = v.at(2);
     }
-    else if (v.size() == 2) {//input as []: flag path
-        flag = v.at(0).at(1);
-        path = v.at(1);
+    else if (v.size() == 2) {//input as []: flag path or test path
+        if(v.at(0) == "test") {
+            flag = 'e';
+            path = v.at(1);
+        }
+        else {
+            flag = v.at(0).at(1);
+            path = v.at(1);
+        }
     }
     else if (v.size() == 1){//input as [] with implicit flag: path
         flag = 'e';
