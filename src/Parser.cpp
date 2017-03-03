@@ -1,4 +1,7 @@
 #include "Parser.h"
+#include "BracketTestCommand.h"
+#include "WordTestCommand.h"
+
 
 //helper function for process
 //creates the connectors in the heap and returns their pointers
