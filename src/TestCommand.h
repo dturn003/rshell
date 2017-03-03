@@ -9,9 +9,11 @@
 using namespace std;
 
 class TestCommand : public BaseAction {
-    private:
-        char flag;
+    protected:
+        string flag;
         string path;
+        bool validArgs;
+        
     public:
         int execute();
         
@@ -20,7 +22,7 @@ class TestCommand : public BaseAction {
         args.size() == 2 -> flag path
         args.size() == 1 -> path
         */
-        TestCommand(const vector<string> &args);
+        TestCommand() { };
 };
 
 #endif

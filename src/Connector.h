@@ -9,10 +9,7 @@ class Connector : public BaseAction {
         BaseAction* right;
     public:
         Connector(BaseAction* left_temp, BaseAction* right_temp) : left(left_temp), right(right_temp) {}
-        virtual ~Connector() {
-            delete left;
-            delete right;
-        }
+
         virtual int execute() = 0;
         BaseAction* getLeft() {
             return left;

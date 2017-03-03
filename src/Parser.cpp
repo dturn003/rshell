@@ -26,6 +26,10 @@ Connector* Parser::createConnect(Operator op, BaseAction* left, BaseAction* righ
 //deletes the current tree
 void Parser::deleteTree(BaseAction* curr)
 {
+    if (!curr) {
+        return;
+    }
+        
     BaseAction* left = curr->getLeft();
     BaseAction* right = curr->getRight();
     
@@ -53,13 +57,11 @@ void Parser::pushCommand(stack<BaseAction*> &operands, vector<string> &args)
         }
         else if (args.at(0) == "test")
         {
-            operands.push(new TestCommand(args));
+            operands.push(new WordTestCommand(args));
         }
         else if (args.at(0) == "[" && args.at(args.size() - 1) == "]")
         {
-            args.erase(args.begin());//remove brackets from args
-            args.pop_back();
-            operands.push(new TestCommand(args));
+            operands.push(new BracketTestCommand(args));
         }
         else
         {
@@ -169,6 +171,8 @@ bool Parser::parse(const string &input) //returns false if exiting, otherwise tr
             {
                 if (args.size() != 0) //there should be no command to push to operands, if there are, there is a user input error
                 {
+                    if (!operands.empty())
+                        deleteTree(operands.top());
                     return true;
                 }
                 
@@ -180,10 +184,14 @@ bool Parser::parse(const string &input) //returns false if exiting, otherwise tr
     
                 if (!cycle(connects, operands))
                 {
+                    if (!operands.empty())
+                        deleteTree(operands.top());
                     return true;
                 }
                 if (connects.empty()) //there should still be a left parenthesis if correct
                 {
+                    if (!operands.empty())
+                        deleteTree(operands.top());
                     return true; //user input error: no left parenthesis
                 }
                 
@@ -195,6 +203,8 @@ bool Parser::parse(const string &input) //returns false if exiting, otherwise tr
                 
                 if (!cycle(connects, operands))
                 {
+                    if (!operands.empty())
+                        deleteTree(operands.top());
                     return true;
                 }
                 connects.push(Always);
@@ -207,13 +217,16 @@ bool Parser::parse(const string &input) //returns false if exiting, otherwise tr
     
                     if (!cycle(connects, operands))
                     {
+                        if (!operands.empty())
+                            deleteTree(operands.top());
                         return true;
                     }
                     connects.push(And); //pushes AndConnector onto connects
                 }
                 else
                 {
-                    
+                    if (!operands.empty())
+                        deleteTree(operands.top());
                     return true;
                 }
                 
@@ -226,12 +239,16 @@ bool Parser::parse(const string &input) //returns false if exiting, otherwise tr
     
                     if (!cycle(connects, operands))
                     {
+                        if (!operands.empty())
+                            deleteTree(operands.top());
                         return true;
                     }
                     connects.push(Or); //pushes AndConnector onto connects
                 }
                 else
                 {
+                    if (!operands.empty())
+                        deleteTree(operands.top());
                     return true;
                 }
             }
@@ -246,12 +263,15 @@ bool Parser::parse(const string &input) //returns false if exiting, otherwise tr
     
     if (!cycle(connects, operands)) //cycle 
     {
+        if (!operands.empty())
+            deleteTree(operands.top());
         return true;
     }
     
     if (!connects.empty()) //remaining left parenthesis, no right parenthesis in user input
     {
-        //deleteTree(operands.top());
+        if (!operands.empty())
+            deleteTree(operands.top());
         return true; 
     }
     
@@ -262,11 +282,11 @@ bool Parser::parse(const string &input) //returns false if exiting, otherwise tr
     
     if (operands.top()->execute() == -1) //execute, if exit, return false
     {
-        //deleteTree(operands.top());
+        deleteTree(operands.top());
         return false;
     }
-    
-    //deleteTree(operands.top());
+
+    deleteTree(operands.top());
     return true;
 }
 
