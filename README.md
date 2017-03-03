@@ -11,4 +11,4 @@ The program is designed to loop until the user inputs the command "exit", output
   - rshell currently does not do anything with bad input other than mark that command as having failed to run
   - combining connectors together, && ||, will run
   - placing a connector in front of the command will allow the command to run. The parser treats the connector as having an empty command       on the left subchild.
-  - 
+  - After entering a large amount of commands the exit command no longer functions correctly
