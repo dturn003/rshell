@@ -26,14 +26,8 @@ int Command::execute() //returns 0 if command failed, 1 if command succeeded, an
 {
     if (length == 1) //empty list of arguments and commands
     {
-        //perror("Missing Command");
+        cout << "Missing Command" << endl;
         return 0; //false
-    }
-    
-    string ex  = "exit";
-    if (strcmp(args[0], ex.c_str()) == 0)
-    {
-        return -1; //exit
     }
         
     pid_t pid = fork();

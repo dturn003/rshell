@@ -6,3 +6,5 @@
 ../bin/rshell < exit_test4
 ../bin/rshell < exit_test5
 ../bin/rshell < exit_test6
+../bin/rshell < exit_test7
+../bin/rshell < exit_test8
