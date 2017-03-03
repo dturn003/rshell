@@ -8,6 +8,10 @@ ls#-l -a
 ls# echo world # echo place
 echo mis#placed
 echo 56#; echo 64
+(echo a && echo b) # && (echo c && echo d)
+(echo a #)
+test -e makefile #src
+test makefile #src
 
 exit
 

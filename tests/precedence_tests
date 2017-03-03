@@ -1,0 +1,10 @@
+(echo a && echo b) || (echo c && echo d)
+(echo z)
+((echo 1))
+(test -e makefile && echo c)
+([ -e hw3 ] && ((echo j || ls -l) ; ((echo i) ; ls )))
+(false) && (echo zz)
+( echo 44
+echo 55 )
+) ls -l
+exit

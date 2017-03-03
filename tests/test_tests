@@ -1,0 +1,14 @@
+test -e makefile
+test -e dkdjd
+test -d hw3
+test -f hw3
+[ -e hw3 ] && echo a
+[ dkdjd ]
+[ -d src ]
+[ -f src ] || test -d src
+[ -z makefile ]
+[ -e kdkdkd ]
+[ -e makefile src ]
+test -e makefile src sksks
+(test -e makefile && echo z) || (test -f src || echo JJJ)
+exit
