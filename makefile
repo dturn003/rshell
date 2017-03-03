@@ -3,8 +3,8 @@ CC_FLAGS=-Wall -Werror -ansi -pedantic
 
 all : rshell
 
-rshell : bin AlwaysConnector AndConnector main Command OrConnector Parser ExitCommand TestCommand
-	$(CC) $(CC_FLAGS) src/AlwaysConnector.o src/main.o src/AndConnector.o src/Command.o src/OrConnector.o src/Parser.o src/ExitCommand.o src/TestCommand.o -o bin/rshell
+rshell : bin AlwaysConnector AndConnector main Command OrConnector Parser ExitCommand TestCommand WordTestCommand BracketTestCommand
+	$(CC) $(CC_FLAGS) src/AlwaysConnector.o src/main.o src/AndConnector.o src/Command.o src/OrConnector.o src/Parser.o src/ExitCommand.o src/TestCommand.o src/BracketTestCommand.o src/WordTestCommand.o -o bin/rshell
 
 AlwaysConnector : src/AlwaysConnector.cpp src/AlwaysConnector.h
 	$(CC) $(CC_FLAGS) -c  src/AlwaysConnector.cpp -o src/AlwaysConnector.o
@@ -29,6 +29,12 @@ ExitCommand : src/ExitCommand.cpp src/ExitCommand.h
 	
 TestCommand : src/TestCommand.cpp src/TestCommand.h
 	$(CC) $(CC_FLAGS) -c src/TestCommand.cpp -o src/TestCommand.o
+	
+WordTestCommand : src/WordTestCommand.cpp src/WordTestCommand.h
+	$(CC) $(CC_FLAGS) -c src/WordTestCommand.cpp -o src/WordTestCommand.o
+	
+BracketTestCommand : src/BracketTestCommand.cpp src/BracketTestCommand.h
+	$(CC) $(CC_FLAGS) -c src/BracketTestCommand.cpp -o src/BracketTestCommand.o
 
 bin :
 	mkdir -p  bin
