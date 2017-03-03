@@ -9,6 +9,5 @@ The program is designed to loop until the user inputs the command "exit", output
   - Ctrl-c does not work as expected with rshell
   - using the arrow keys does not work on rshell
   - rshell currently does not do anything with bad input other than mark that command as having failed to run
-  - combining connectors together, && ||, will run
-  - placing a connector in front of the command will allow the command to run. The parser treats the connector as having an empty command       on the left subchild.
-  - After entering a large amount of commands the exit command no longer functions correctly
+  - After entering a large amount of commands the exit command will no longer function correctly
+  - Placing empty parentheses [ex: () echo a] will still allow command to run afterwards
