@@ -51,7 +51,7 @@ TestCommand::TestCommand(const std::vector<std::string> &v) {
 int TestCommand::execute() {
     if (errorMessage.size() == 1) {
         cout << "Invalid argument length" << endl;
-        return ExitStatus::FAILURE;
+        return 0; //ExitStatus::FAILURE;
     }
     struct stat buf; //struct returned by stat function
     int statOut = stat(path.c_str(), &buf);
@@ -68,19 +68,19 @@ int TestCommand::execute() {
     if (statOut != 0) {
             cout << "(False)" << endl;
             perror("stat() failed");
-            return 0
+            return 0;
     }
     
     //if directory/file does exist
     //tests flag condition
     if (flag == "-e") {
         cout << "(True)" << endl;
-        return 1 //ExitStatus::SUCCESS;
+        return 1; //ExitStatus::SUCCESS;
     }
     else if (flag == "-f") { //tests if regular file
         if(S_ISREG(buf.st_mode)) {//is regular file macro
             cout << "(True)" << endl;
-            return 1 //ExitStatus::SUCCESS;
+            return 1; //ExitStatus::SUCCESS;
         }
         else {
             cout << "(False)" << endl;
