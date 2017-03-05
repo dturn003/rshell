@@ -1,28 +1,25 @@
-#ifndef TESTCOMMAND_H
-#define TESTCOMMAND_H
+#ifndef TEST_COMMAND_H
+#define TEST_COMMAND_H
 
 #include "BaseAction.h"
-
 #include <vector>
 #include <string>
 
-using namespace std;
-
 class TestCommand : public BaseAction {
-    protected:
-        string flag;
-        string path;
-        bool validArgs;
+    private:
+        std::string flag;
+        std::string path;
+        std::string errorMessage;
         
     public:
-        int execute();
-        
         /*
         args.size() == 3 -> "test" flag path
         args.size() == 2 -> flag path
         args.size() == 1 -> path
         */
-        TestCommand() { };
+        TestCommand(const std::vector<std::string> &v);
+        TestCommand(int length, const std::vector<std::string> &v);
+        int execute();
 };
 
 #endif
