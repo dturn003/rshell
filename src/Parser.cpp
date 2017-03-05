@@ -1,4 +1,5 @@
 #include "Parser.h"
+#include <iostream>
 
 void Parser::pushCommand(std::stack<std::unique_pointer<BaseAction> > &operands, std::vector<std::string> &args) {
     if (args.size() != 0) { //checks if empty command 
@@ -20,21 +21,23 @@ void Parser::pushCommand(std::stack<std::unique_pointer<BaseAction> > &operands,
 
 bool Parser::process(std::stack<std::unique_pointer<BaseAction> > &connects, std::stack<std::unique_pointer<BaseAction> > &operands) {
     if (operands.empty()) {
+        //TODO: error with first connector
         return false; //std::stack was empty, Connector has no children. process failed.
     }
     else {
-        std::unique_pointer<BaseAction> rightOp = operands.top();
+        std::unique_pointer<BaseAction> rightOp = operands.top(); //moves ownership to rightOp
         operands.pop();
         
         if (operands.empty()) {
+            //TODO: error rhs of connects top()
             return false; //std::stack was empty after popping only 1 element, Connector does not have 2 children. process failed.
         }
         else {
-            std::unique_pointer<BaseAction> leftOp = operands.top();
+            std::unique_pointer<BaseAction> leftOp = operands.top(); //moves ownership to leftOp
             operands.pop();
-            std::unique_pointer<BaseAction> result = connects.top();
-            result->setLeft(leftOp);
-            result->setRight(rightOp);
+            std::unique_pointer<BaseAction> result = connects.top(); //moves ownership to resultant connector
+            result->setLeft(leftOp); //leftOp switches ownership to result
+            result->setRight(rightOp); //rightOp switches ownership to result
             operands.push(result); 
             connects.pop();
             return true; //process succeeded.
@@ -92,24 +95,24 @@ std::unique_pointer<BaseAction> Parser::parse(const std::string &input)
                 break; //exits for loop
             else if (link == '(') {
                 if (args.size() != 0) { //there should be no command to push to operands, if there are, there is a user input error
-                    cout << "Unexpected token near '('" << std::endl;
+                    std::cout << "Unexpected token near '('" << std::endl;
                     return nullptr;
                 }
                 connects.push(LEFT); //push left parenthesis
             }
             else if (link == ')') {
                 pushCommand(operands, args);
-                if (!connects.empty() && connects.top() == LEFT) {
-                    cout << "Unexpected token near ')'" << std:: endl;
+                if (!connects.empty() && connects.top() == LEFT) { //case of (), but no command
+                    std::cout << "Unexpected token near ')'" << std::endl;
                     return nullptr;
                 }
                 if (!cycle(connects, operands)) {
                     //TODO: unaware of what to print here
-                    cout << "Unexpected token before ')'"
+                    std::cout << "Unexpected token before ')'" << std::endl;
                     return nullptr;
                 }
                 if (connects.empty()) { //there should still be a left parenthesis if correct
-                    cout << "No corresponding '(' token found" << std::endl;
+                    std::cout << "No corresponding '(' token found" << std::endl;
                     return nullptr;
                 }
                 connects.pop(); //pops left parenthesis
@@ -117,8 +120,8 @@ std::unique_pointer<BaseAction> Parser::parse(const std::string &input)
             else if (link == ';') { //checks if AlwaysConnector
                 pushCommand(operands, args);
                 if (!cycle(connects, operands)) {
-                    cout << "Unexpected token near ';'" << std::endl;
-                    return 0;
+                    std::cout << "Unexpected token near ';'" << std::endl;
+                    return nullptr;
                 }
                 connects.push(std::unique_pointer<AlwaysConnector>());
             }
@@ -126,13 +129,13 @@ std::unique_pointer<BaseAction> Parser::parse(const std::string &input)
                 if (checkDouble('&', it, last)) { //checks if AndConnector
                     pushCommand(operands, args); 
                     if (!cycle(connects, operands)) {
-                        cout << "Unexpected token near '&&'" << std::endl;
+                        std::cout << "Unexpected token near '&&'" << std::endl;
                         return nullptr;
                     }
                     connects.push(std::unique_pointer<AndConnector>()); //pushes AndConnector onto connects
                 }
                 else { //detected only a single '&'
-                    cout << "Unexpected token near '&'" << std::endl;
+                    std::cout << "Unexpected token near '&'" << std::endl;
                     return nullptr;
                 }
             }
@@ -140,13 +143,13 @@ std::unique_pointer<BaseAction> Parser::parse(const std::string &input)
                 if (checkDouble('|', it, last)) { //checks if OrConnector
                     pushCommand(operands, args);
                     if (!cycle(connects, operands)) {
-                        cout << "Unexpected token near '||'" << std:: endl;
+                        std::cout << "Unexpected token near '||'" << std:: endl;
                         return nullptr;
                     }
                     connects.push(std::unique_pointer<OrConnector>()); //pushes OrConnector onto connects
                 }
                 else { //detected only a single '|'
-                    cout << "Unexpected token near '|'" << std:: endl;
+                    std::cout << "Unexpected token near '|'" << std:: endl;
                     return nullptr;
                 }
             }
@@ -159,12 +162,14 @@ std::unique_pointer<BaseAction> Parser::parse(const std::string &input)
     //Last pass to read in final command, and process final Connector if they exist.
     pushCommand(operands, args); //pushes last command if there was one
     if (!cycle(connects, operands)) { //cycle last connector if there is one since there was no future connector to call cycle.
+        
         return nullptr;
     }
     else if (!connects.empty()) { //remaining left parenthesis, no right parenthesis in user input
+        std::cout << "No corresponding token ')' found" << std::endl;
         return nullptr;
     }
-    else if (operands.empty()) { //empty command linr
+    else if (operands.empty()) { //empty command line
         return nullptr;
     }
     else {

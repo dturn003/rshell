@@ -13,7 +13,6 @@
 
 //Libraries
 #include <string>
-#include <iostream>
 #include <vector>
 #include <stack>
 #include <boost/tokenizer.hpp>
@@ -119,7 +118,7 @@ class Parser
                          
                     Use: Use parse when the user had input a string of commands in the shell.
         */
-        bool parse(const std::string &input);
+        std::unique_pointer<BaseAction> parse(const std::string &input);
 };
 
 #endif
