@@ -16,13 +16,12 @@
 #include <vector>
 #include <stack>
 #include <boost/tokenizer.hpp>
-#include <memory>
 
 class Parser
 {
     private:
         typedef boost::tokenizer<boost::char_separator<char > > Tok; //defines tokenizer object
-        std::unique_pointer<BaseAction> LEFT = nullptr; //represents Left parenthesis, means of identifying '(' in Connector stack
+        BaseAction* LEFT = nullptr; //represents Left parenthesis, means of identifying '(' in Connector stack
         
         /*
             Assumptions: The type of command is determined by args.at(0), or the command name.
@@ -42,7 +41,7 @@ class Parser
                          1.     We have read in a connector (&&, ||, ;)
                          2.     We have reached the end of the token list (Last command)
         */
-        void pushCommand(std::stack<std::unique_pointer<BaseAction> > &operands, std::vector<std::string> &args);
+        void pushCommand(std::stack<BaseAction* > &operands, std::vector<std::string> &args);
         
         /*
             Assumptions: process assumes that it is perfectly fine to start connecting the top Connector
@@ -52,7 +51,7 @@ class Parser
                          
             Description: process returns 'true' if the current Connector has been correctly processed.
                          process is defined by the following steps:
-                         1.     Pop operand std::stack twice. Each std::unique_pointer<BaseAction> element represents
+                         1.     Pop operand std::stack twice. Each BaseAction* element represents
                                 the left or right action (connectors or commands) to be connected
                                 with the the current top Connector of the connects std::stack.
                                 
@@ -68,10 +67,10 @@ class Parser
                     Use: Use process when we have determined that another Connector has been read in from
                          the token list, and it is fine to process previous connectors.
         */
-        bool process(std::stack<std::unique_pointer<BaseAction> > &connects, std::stack<std::unique_pointer<BaseAction> > &operands);
+        bool process(std::stack<BaseAction*> &connects, std::stack<BaseAction*> &operands);
         
         /*
-            Assumptions: connects stack is not empty; there is a top std::unique_pointer<BaseAction>.
+            Assumptions: connects stack is not empty; there is a top BaseAction*.
                          
             Description: cycle correctly parses the syntax tree in the correct order in which
                          each Connector has come. We need to process the previous Connectors to correctly 
@@ -85,7 +84,7 @@ class Parser
                          not apply when the parser reads in a ')'. In the case that precedence is unequal among 
                          Connectors and the parser has read in a ')', the while loop should ignore the precedence check.
         */
-        bool cycle(std::stack<std::unique_pointer<BaseAction> > &connects, std::stack<std::unique_pointer<BaseAction> > &operands);
+        bool cycle(std::stack<BaseAction*> &connects, std::stack<BaseAction*> &operands);
         
         /*
             Assumptions: checkDouble assumes that an &, | has been read in from inputs and needs to be checked
@@ -118,7 +117,7 @@ class Parser
                          
                     Use: Use parse when the user had input a string of commands in the shell.
         */
-        std::unique_pointer<BaseAction> parse(const std::string &input);
+        BaseAction* parse(const std::string &input);
 };
 
 #endif
