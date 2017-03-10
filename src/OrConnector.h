@@ -3,11 +3,11 @@
 
 #include "Connector.h"
 
-class OrConnector : public Connector
-{
+class OrConnector : public Connector {
     public:
-    OrConnector(BaseAction* left_temp, BaseAction* right_temp) : Connector(left_temp, right_temp) { };
-    int  execute();
+        OrConnector() {};
+        OrConnector(BaseAction* left_temp, BaseAction* right_temp) : Connector(left_temp, right_temp) { };
+        int  execute();
 };
 
 #endif

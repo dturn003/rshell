@@ -51,7 +51,7 @@ TestCommand::TestCommand(const std::vector<std::string> &v) {
 int TestCommand::execute() {
     if (errorMessage.size() != 0) {
         std::cout << errorMessage << std::endl;
-        return ExitStatus::FAILURE;
+        return 0;
     }
     struct stat buf; //struct returned by stat function
     int statOut = stat(path.c_str(), &buf);
@@ -68,37 +68,37 @@ int TestCommand::execute() {
     if (statOut != 0) {
             std::cout << "(False)" << std::endl;
             perror("stat() failed");
-            return ExitStatus::FAILURE;
+            return 0;
     }
     
     //if directory/file does exist
     //tests flag condition
     if (flag == "-e") {
         std::cout << "(True)" << std::endl;
-        return ExitStatus::SUCCESS;
+        return 1;
     }
     else if (flag == "-f") { //tests if regular file
         if(S_ISREG(buf.st_mode)) {//is regular file macro
             std::cout << "(True)" << std::endl;
-            return ExitStatus::SUCCESS;
+            return 1;
         }
         else {
             std::cout << "(False)" << std::endl;
-            return ExitStatus::FAILURE;
+            return 0;
         }
     }
     else if (flag == "-d") { //tests if directory
         if(S_ISDIR(buf.st_mode)) {//is directory macro
             std::cout << "(True)" << std::endl;
-            return ExitStatus::SUCCESS;
+            return 1;
         }
         else {
             std::cout << "(False)" << std::endl;
-            return ExitStatus::FAILURE;
+            return 0;
         }
     }
     else {
         std::cout << flag << ": Improper flag" << std::endl;
-        return ExitStatus::FAILURE;
-    }[ t]
+        return 0;
+    }
 }

@@ -3,11 +3,11 @@
 
 #include "Connector.h"
 
-class AndConnector : public Connector
-{
-public:
-	AndConnector(BaseAction* left_temp, BaseAction* right_temp) : Connector(left_temp, right_temp) { };
-	int execute();
+class AndConnector : public Connector {
+	public:
+		AndConnector(){};
+		AndConnector(BaseAction* left_temp, BaseAction* right_temp) : Connector(left_temp, right_temp) { };
+		int execute();
 };
 
 #endif

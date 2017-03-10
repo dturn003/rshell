@@ -119,7 +119,7 @@ class Parser
                          
                     Use: Use parse when the user had input a string of commands in the shell.
         */
-        int parse(const std::string &input);
+        BaseAction* parse(const std::string &input);
 };
 
 #endif

@@ -1,7 +1,7 @@
 #include "Parser.h"
 #include <iostream>
 
-void deleteStacks(std::stack<BaseAction*> & operands, std::stack<BaseAction*> & connects) {
+void Parser::deleteStacks(std::stack<BaseAction*> & operands, std::stack<BaseAction*> & connects) {
     while (!operands.empty()) {
         delete operands.top();
         operands.pop();
@@ -165,7 +165,7 @@ BaseAction* Parser::parse(const std::string &input)
                     }
                     connects.push(new OrConnector()); //pushes OrConnector onto connects
                 }
-                else { //detected only a single '|'
+                else { //detected only a single '|' , TODO: PIPING
                     std::cout << "Unexpected token near '|'" << std:: endl;
                     deleteStacks(operands, connects);
                     return nullptr;
@@ -180,8 +180,8 @@ BaseAction* Parser::parse(const std::string &input)
     //Last pass to read in final command, and process final Connector if they exist.
     pushCommand(operands, args); //pushes last command if there was one
     if (!cycle(connects, operands)) { //cycle last connector if there is one
-            std::cout << "Unexpected token near last connector" << std::endl;
-            deleteStacks(operands, connects);
+        std::cout << "Unexpected token near last connector" << std::endl;
+        deleteStacks(operands, connects);
         return nullptr;
     }
     else if (!connects.empty()) { //remaining left parenthesis, no right parenthesis in user input
@@ -193,8 +193,6 @@ BaseAction* Parser::parse(const std::string &input)
         return nullptr;
     }
     else {
-        int exitValue = operands.top()->execute();
-        delete operands.top();
-        return exitValue;
+        return operands.top();
     }
 }

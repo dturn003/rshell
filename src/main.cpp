@@ -23,7 +23,11 @@ int main() {
         string input;
         getline(cin, input);
             
-        exit = !filter.parse(input);
+        BaseAction* syntaxTree = filter.parse(input);
+        if (syntaxTree) {
+            exit = syntaxTree->execute();
+            delete syntaxTree;
+        }
     }
    
     return 0;

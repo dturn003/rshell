@@ -8,6 +8,7 @@ class Connector : public BaseAction {
         BaseAction* left;
         BaseAction* right;
     public:
+        Connector() : left(nullptr), right(nullptr) {};
         Connector(BaseAction* left_temp, BaseAction* right_temp) : left(left_temp), right(right_temp) {};
         ~Connector() {
             delete left;
