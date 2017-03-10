@@ -1,5 +1,5 @@
-#ifndef COMMAND_H
-#define COMMAND_H
+#ifndef BIN_COMMAND_H
+#define BIN_COMMAND_H
 
 //Hierarchy
 #include "BaseAction.h"
