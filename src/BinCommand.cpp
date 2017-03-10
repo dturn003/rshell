@@ -27,32 +27,32 @@ BinCommand::~BinCommand() {
 int BinCommand::execute() { //returns 0 if command failed, 1 if command succeeded, and -1 if exit command
     pid_t pid = fork();
     
-    if (pid < 0) { //fork failed, return ExitStatus::FAILURE
+    if (pid < 0) { //fork failed, return 0
         perror("Call fork failed");
-        return ExitStatus::FAILURE;
+        return 0;
     }
     else if (pid == 0) { //child process
         execvp(args[0], args); //run program in bin
         perror("Command has failed");
-        return ExitStatus::FAILURE;
+        return 0;
     }
     else { //parent
         int status; //status of child process
         if (waitpid(pid, &status, 0) == -1) { //waits for child process to finish
             perror("Call waitpid has failed");
-            return ExitStatus::FAILURE; 
+            return 0; 
         }
         else {
             if (WIFEXITED(status)) {
                 if (WEXITSTATUS(status) == 0) { //program succeeded
-                    return ExitStatus::SUCCESS; //true
+                    return 1; //true
                 }
                 else { //program failed but exited normally
-                    return ExitStatus::FAILURE; //false
+                    return 0; //false
                 }
             }
             else { //program exited abnormally
-                return ExitStatus::FAILURE; //false
+                return 0; //false
             }
         }
     }
