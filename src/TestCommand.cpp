@@ -11,7 +11,7 @@ TestCommand::TestCommand(int length, const std::vector<std::string> &v) {
             flag = v.at(1);
             path = v.at(2);
             errorMessage = "";
-        {
+        }
         else {
             errorMessage = "Expected token ']'";
         }
@@ -49,9 +49,9 @@ TestCommand::TestCommand(const std::vector<std::string> &v) {
 }
 
 int TestCommand::execute() {
-    if (errorMessage.size() == 1) {
-        cout << "Invalid argument length" << endl;
-        return 0; //ExitStatus::FAILURE;
+    if (errorMessage.size() != 0) {
+        std::cout << errorMessage << std::endl;
+        return ExitStatus::FAILURE;
     }
     struct stat buf; //struct returned by stat function
     int statOut = stat(path.c_str(), &buf);
@@ -59,46 +59,46 @@ int TestCommand::execute() {
     /*
     if (statOut < 0) {
         perror("stat() failed");
-        cout << ("False") << endl;
+        std::cout << ("False") << std::endl;
     }
     */
     
     //if directory/file doesn't exist
     //functions same way for each flag
     if (statOut != 0) {
-            cout << "(False)" << endl;
+            std::cout << "(False)" << std::endl;
             perror("stat() failed");
-            return 0;
+            return ExitStatus::FAILURE;
     }
     
     //if directory/file does exist
     //tests flag condition
     if (flag == "-e") {
-        cout << "(True)" << endl;
-        return 1; //ExitStatus::SUCCESS;
+        std::cout << "(True)" << std::endl;
+        return ExitStatus::SUCCESS;
     }
     else if (flag == "-f") { //tests if regular file
         if(S_ISREG(buf.st_mode)) {//is regular file macro
-            cout << "(True)" << endl;
-            return 1; //ExitStatus::SUCCESS;
+            std::cout << "(True)" << std::endl;
+            return ExitStatus::SUCCESS;
         }
         else {
-            cout << "(False)" << endl;
-            return 0;
+            std::cout << "(False)" << std::endl;
+            return ExitStatus::FAILURE;
         }
     }
     else if (flag == "-d") { //tests if directory
         if(S_ISDIR(buf.st_mode)) {//is directory macro
-            cout << "(True)" << endl;
-            return 1;
+            std::cout << "(True)" << std::endl;
+            return ExitStatus::SUCCESS;
         }
         else {
-            cout << "(False)" << endl;
-            return 0;
+            std::cout << "(False)" << std::endl;
+            return ExitStatus::FAILURE;
         }
     }
     else {
-        cout << "Improper flag: test command" << endl;
-        return 0;
-    }
+        std::cout << flag << ": Improper flag" << std::endl;
+        return ExitStatus::FAILURE;
+    }[ t]
 }

@@ -23,6 +23,8 @@ class Parser
         typedef boost::tokenizer<boost::char_separator<char > > Tok; //defines tokenizer object
         BaseAction* LEFT = nullptr; //represents Left parenthesis, means of identifying '(' in Connector stack
         
+        void deleteStacks(std::stack<BaseAction*> & operands, std::stack<BaseAction*> & connects);
+        
         /*
             Assumptions: The type of command is determined by args.at(0), or the command name.
                          If the command fits the format of any of our built in commands, we create
@@ -41,7 +43,7 @@ class Parser
                          1.     We have read in a connector (&&, ||, ;)
                          2.     We have reached the end of the token list (Last command)
         */
-        void pushCommand(std::stack<BaseAction* > &operands, std::vector<std::string> &args);
+        void pushCommand(std::stack<BaseAction*> &operands, std::vector<std::string> &args);
         
         /*
             Assumptions: process assumes that it is perfectly fine to start connecting the top Connector
@@ -117,7 +119,7 @@ class Parser
                          
                     Use: Use parse when the user had input a string of commands in the shell.
         */
-        BaseAction* parse(const std::string &input);
+        int parse(const std::string &input);
 };
 
 #endif

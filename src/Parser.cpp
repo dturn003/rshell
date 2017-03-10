@@ -1,6 +1,17 @@
 #include "Parser.h"
 #include <iostream>
 
+void deleteStacks(std::stack<BaseAction*> & operands, std::stack<BaseAction*> & connects) {
+    while (!operands.empty()) {
+        delete operands.top();
+        operands.pop();
+    }
+    while (!connects.empty()) {
+        delete connects.top();
+        connects.pop();
+    }
+}
+
 void Parser::pushCommand(std::stack<BaseAction*> &operands, std::vector<std::string> &args) {
     if (args.size() != 0) { //checks if empty command 
         if (args.at(0) == "exit") {
@@ -93,6 +104,7 @@ BaseAction* Parser::parse(const std::string &input)
             else if (link == '(') {
                 if (args.size() != 0) { //there should be no command to push to operands, if there are, there is a user input error
                     std::cout << "Unexpected token near '('" << std::endl;
+                    deleteStacks(operands, connects);
                     return nullptr;
                 }
                 connects.push(LEFT); //push left parenthesis
@@ -102,14 +114,17 @@ BaseAction* Parser::parse(const std::string &input)
                 
                 if (!connects.empty() && operands.empty() && connects.top() == LEFT) { //case of (), but no command
                     std::cout << "Unexpected token near ')'" << std::endl;
+                    deleteStacks(operands, connects);
                     return nullptr;
                 }
                 if (!cycle(connects, operands)) {
                     std::cout << "Unexpected token before ')' token" << std::endl;
+                    deleteStacks(operands, connects);
                     return nullptr;
                 }
                 if (connects.empty()) { //there should still be a left parenthesis if correct
                     std::cout << "Unexpected token near ')'" << std::endl;
+                    deleteStacks(operands, connects);
                     return nullptr;
                 }
             
@@ -119,6 +134,7 @@ BaseAction* Parser::parse(const std::string &input)
                 pushCommand(operands, args);
                 if (!cycle(connects, operands)) {
                     std::cout << "Unexpected token near ';'" << std::endl;
+                    deleteStacks(operands, connects);
                     return nullptr;
                 }
                 connects.push(new AlwaysConnector());
@@ -128,12 +144,14 @@ BaseAction* Parser::parse(const std::string &input)
                     pushCommand(operands, args); 
                     if (!cycle(connects, operands)) {
                         std::cout << "Unexpected token near '&&'" << std::endl;
+                        deleteStacks(operands, connects);
                         return nullptr;
                     }
                     connects.push(new AndConnector()); //pushes AndConnector onto connects
                 }
                 else { //detected only a single '&'
                     std::cout << "Unexpected token near '&'" << std::endl;
+                    deleteStacks(operands, connects);
                     return nullptr;
                 }
             }
@@ -142,12 +160,14 @@ BaseAction* Parser::parse(const std::string &input)
                     pushCommand(operands, args);
                     if (!cycle(connects, operands)) {
                         std::cout << "Unexpected token near '||'" << std::endl;
+                        deleteStacks(operands, connects);
                         return nullptr;
                     }
                     connects.push(new OrConnector()); //pushes OrConnector onto connects
                 }
                 else { //detected only a single '|'
                     std::cout << "Unexpected token near '|'" << std:: endl;
+                    deleteStacks(operands, connects);
                     return nullptr;
                 }
             }
@@ -161,16 +181,20 @@ BaseAction* Parser::parse(const std::string &input)
     pushCommand(operands, args); //pushes last command if there was one
     if (!cycle(connects, operands)) { //cycle last connector if there is one
             std::cout << "Unexpected token near last connector" << std::endl;
+            deleteStacks(operands, connects);
         return nullptr;
     }
     else if (!connects.empty()) { //remaining left parenthesis, no right parenthesis in user input
         std::cout << "Unexpected token near ')'" << std::endl;
+        deleteStacks(operands, connects);
         return nullptr;
     }
     else if (operands.empty()) { //empty command line
         return nullptr;
     }
     else {
-        return operands.top();
+        int exitValue = operands.top()->execute();
+        delete operands.top();
+        return exitValue;
     }
 }
