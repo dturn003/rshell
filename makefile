@@ -3,8 +3,8 @@ CC_FLAGS=-Wall -Werror -ansi -pedantic -std=c++11
 
 all : rshell
 
-rshell : bin AlwaysConnector AndConnector main BinCommand OrConnector Parser ExitCommand TestCommand 
-	$(CC) $(CC_FLAGS) src/AlwaysConnector.o src/main.o src/AndConnector.o src/BinCommand.o src/OrConnector.o src/Parser.o src/ExitCommand.o src/TestCommand.o -o bin/rshell
+rshell : bin AlwaysConnector AndConnector main BinCommand OrConnector Parser ExitCommand TestCommand PipeConnector
+	$(CC) $(CC_FLAGS) src/AlwaysConnector.o src/PipeConnector.o src/main.o src/AndConnector.o src/BinCommand.o src/OrConnector.o src/Parser.o src/ExitCommand.o src/TestCommand.o -o bin/rshell
 
 AlwaysConnector : src/AlwaysConnector.cpp src/AlwaysConnector.h
 	$(CC) $(CC_FLAGS) -c  src/AlwaysConnector.cpp -o src/AlwaysConnector.o
@@ -29,6 +29,9 @@ ExitCommand : src/ExitCommand.cpp src/ExitCommand.h
 	
 TestCommand : src/TestCommand.cpp src/TestCommand.h
 	$(CC) $(CC_FLAGS) -c src/TestCommand.cpp -o src/TestCommand.o
+	
+PipeConnector : src/PipeConnector.h src/PipeConnector.cpp
+	$(CC) $(CC_FLAGS) -c  src/PipeConnector.cpp -o src/PipeConnector.o
 
 bin :
 	mkdir -p  bin
