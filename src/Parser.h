@@ -103,7 +103,7 @@ class Parser
                     Use: Use checkDouble when a Connector to be read in requires two of the same character twice
                          in a row. i.e. &&, ||.
         */
-        bool checkDouble(char link, Tok::iterator &it, Tok::iterator last);
+        bool checkDouble(char link, Tok::iterator it, Tok::iterator last);
         
     public:
         Parser() {}; //default constructor

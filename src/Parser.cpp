@@ -65,7 +65,7 @@ bool Parser::cycle(std::stack<BaseAction*> &connects, std::stack<BaseAction*> &o
     return true;
 }
 
-bool Parser::checkDouble(char link, Tok::iterator &it, Tok::iterator last)
+bool Parser::checkDouble(char link, Tok::iterator it, Tok::iterator last)
 {
     if (it == last) { //if iterator is already last token. No double to be read in.
         return false;
@@ -141,6 +141,7 @@ BaseAction* Parser::parse(const std::string &input)
             }
             else if (link == '&') { //initial check for checkDouble
                 if (checkDouble('&', it, last)) { //checks if AndConnector
+                    ++it; ++it;
                     pushCommand(operands, args); 
                     if (!cycle(connects, operands)) {
                         std::cout << "Unexpected token near '&&'" << std::endl;
@@ -157,6 +158,7 @@ BaseAction* Parser::parse(const std::string &input)
             }
             else if (link == '|') { //initial check for checkDouble
                 if (checkDouble('|', it, last)) { //checks if OrConnector
+                    ++it; ++it;
                     pushCommand(operands, args);
                     if (!cycle(connects, operands)) {
                         std::cout << "Unexpected token near '||'" << std::endl;
@@ -180,7 +182,7 @@ BaseAction* Parser::parse(const std::string &input)
             }
         }
     }
-    
+
     //Last pass to read in final command, and process final Connector if they exist.
     pushCommand(operands, args); //pushes last command if there was one
     if (!cycle(connects, operands)) { //cycle last connector if there is one
