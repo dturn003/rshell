@@ -103,7 +103,7 @@ BaseAction* Parser::parse(const std::string &input)
                 break; //exits for loop
             else if (link == '(') {
                 if (args.size() != 0) { //there should be no command to push to operands, if there are, there is a user input error
-                    std::cout << "Unexpected token near '('" << std::endl;
+                    std::cout << "'('" << std::endl;
                     deleteStacks(operands, connects);
                     return nullptr;
                 }
@@ -166,9 +166,13 @@ BaseAction* Parser::parse(const std::string &input)
                     connects.push(new OrConnector()); //pushes OrConnector onto connects
                 }
                 else { //detected only a single '|' , TODO: PIPING
-                    std::cout << "Unexpected token near '|'" << std:: endl;
-                    deleteStacks(operands, connects);
-                    return nullptr;
+                    pushCommand(operands, args);
+                    if (!cycle(connects, operands)) {
+                        std::cout << "Unexpected token near '|'" << std::endl;
+                        deleteStacks(operands, connects);
+                        return nullptr;
+                    }
+                    connects.push(new PipeConnector()); //pushes PipeConnector onto connects
                 }
             }
             else { //Else, add to args

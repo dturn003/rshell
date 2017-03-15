@@ -10,6 +10,7 @@
 #include "AndConnector.h"
 #include "OrConnector.h"
 #include "AlwaysConnector.h"
+#include "PipeConnector.h"
 
 //Libraries
 #include <string>
