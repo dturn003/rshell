@@ -8,7 +8,7 @@ PipeConnector::PipeConnector() : Connector() {}
 PipeConnector::PipeConnector(BaseAction* left, BaseAction* right) : Connector(left, right) {}
 
 int PipeConnector::execute() {
-    int pipefd[2];
+    int pipefd[2];//0-input end, 1-output end
     
     if(pipe(pipefd) < 0) {
         perror("Pipe failed");
@@ -23,24 +23,17 @@ int PipeConnector::execute() {
     }
     else if (pid == 0) { //child process, writes - left child
         close(pipefd[0]);
-        close(pipefd[1]);
+        // dup(pipefd[1]);
+        dup2(pipefd[1], fileno(stdout));
         this->left->execute();
         return 1;
     }
     else { //parent process, reads - right child
-        int status; //status of child process
-        if (waitpid(pid, &status, 0) == -1) { //waits for child process to finish
-            perror("Call waitpid has failed");
-            return 1; 
-        }
-        else {
-            close(0); //closes stdin
-            dup(pipefd[0]); // puts read end of pipe in dup
-            close(pipefd[0]);
-            close(pipefd[1]);
-            this->right->execute();
-            return 1;
-        }
+        close(pipefd[1]);
+        // dup(pipefd[0]); // puts read end of pipe in dup
+        dup2(pipefd[0], fileno(stdin));
+        this->right->execute();
+        return 1;
     }
     
     
