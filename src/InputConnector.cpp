@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
+#include <sys/wait.h>
 
 InputConnector::InputConnector(BaseAction* command, string file) {
     this->command = command;
@@ -34,5 +35,6 @@ int InputConnector::execute() {
     }
     //parent process
     close(fd);
+    wait(0);
     return 1;
 }
