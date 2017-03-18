@@ -9,5 +9,5 @@ The program is designed to loop until the user inputs the command "exit", output
   - Ctrl-c does not work as expected with rshell
   - using the arrow keys does not work on rshell
   - rshell currently does not do anything with bad input other than mark that command as having failed to run
-  - After entering a large amount of commands the exit command will no longer function correctly
   - Placing empty parentheses [ex: () echo a] will still allow command to run afterwards
+  - Placing commands after an input redirection is not checked for which may lead to errors parsing

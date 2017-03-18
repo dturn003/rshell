@@ -1,10 +1,10 @@
 CC=g++
-CC_FLAGS=-Wall -Werror -ansi -pedantic
+CC_FLAGS=-Wall -Werror -ansi -pedantic -std=c++11 -g
 
 all : rshell
 
-rshell : bin AlwaysConnector AndConnector main Command OrConnector Parser ExitCommand TestCommand WordTestCommand BracketTestCommand
-	$(CC) $(CC_FLAGS) src/AlwaysConnector.o src/main.o src/AndConnector.o src/Command.o src/OrConnector.o src/Parser.o src/ExitCommand.o src/TestCommand.o src/BracketTestCommand.o src/WordTestCommand.o -o bin/rshell
+rshell : bin AlwaysConnector AndConnector main BinCommand OrConnector Parser ExitCommand TestCommand PipeConnector InputConnector OutputConnector AppendConnector
+	$(CC) $(CC_FLAGS) src/AlwaysConnector.o src/PipeConnector.o src/main.o src/AndConnector.o src/BinCommand.o src/OrConnector.o src/Parser.o src/ExitCommand.o src/TestCommand.o src/InputConnector.o src/OutputConnector.o src/AppendConnector.o -o bin/rshell
 
 AlwaysConnector : src/AlwaysConnector.cpp src/AlwaysConnector.h
 	$(CC) $(CC_FLAGS) -c  src/AlwaysConnector.cpp -o src/AlwaysConnector.o
@@ -15,8 +15,8 @@ AndConnector : src/AndConnector.cpp src/AndConnector.h
 main : src/main.cpp
 	$(CC) $(CC_FLAGS) -c src/main.cpp -o src/main.o
 
-Command : src/Command.cpp src/Command.h
-	$(CC) $(CC_FLAGS) -c src/Command.cpp -o src/Command.o
+BinCommand : src/BinCommand.cpp src/BinCommand.h
+	$(CC) $(CC_FLAGS) -c src/BinCommand.cpp -o src/BinCommand.o
 
 OrConnector : src/OrConnector.cpp src/OrConnector.h
 	$(CC) $(CC_FLAGS) -c src/OrConnector.cpp -o src/OrConnector.o
@@ -30,11 +30,17 @@ ExitCommand : src/ExitCommand.cpp src/ExitCommand.h
 TestCommand : src/TestCommand.cpp src/TestCommand.h
 	$(CC) $(CC_FLAGS) -c src/TestCommand.cpp -o src/TestCommand.o
 	
-WordTestCommand : src/WordTestCommand.cpp src/WordTestCommand.h
-	$(CC) $(CC_FLAGS) -c src/WordTestCommand.cpp -o src/WordTestCommand.o
+PipeConnector : src/PipeConnector.h src/PipeConnector.cpp
+	$(CC) $(CC_FLAGS) -c  src/PipeConnector.cpp -o src/PipeConnector.o
 	
-BracketTestCommand : src/BracketTestCommand.cpp src/BracketTestCommand.h
-	$(CC) $(CC_FLAGS) -c src/BracketTestCommand.cpp -o src/BracketTestCommand.o
+InputConnector : src/InputConnector.h src/InputConnector.cpp
+	$(CC) $(CC_FLAGS) -c  src/InputConnector.cpp -o src/InputConnector.o
+	
+OutputConnector : src/OutputConnector.h src/OutputConnector.cpp
+	$(CC) $(CC_FLAGS) -c  src/OutputConnector.cpp -o src/OutputConnector.o
+	
+AppendConnector : src/AppendConnector.h src/AppendConnector.cpp
+	$(CC) $(CC_FLAGS) -c  src/AppendConnector.cpp -o src/AppendConnector.o
 
 bin :
 	mkdir -p  bin

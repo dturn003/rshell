@@ -1,7 +1,6 @@
 #include "OrConnector.h"
 
-int OrConnector::execute()
-{
+int OrConnector::execute() {
     int out = 0;
     if(left) {
         out = left->execute();

@@ -13,17 +13,22 @@ int main() {
     char hostname[256];
     if (gethostname(hostname, sizeof(hostname))) {
         perror("gethostname() error");
-    }
+    } 
     
     Parser filter;
     
     bool exit = false; 
     while(!exit) {
-        cout << username << "@" << hostname << "$ ";
+        cout << "[" << username << "@" << hostname << "] $ ";
+        //cout << "$ ";
         string input;
         getline(cin, input);
             
-        exit = !filter.parse(input);
+        BaseAction* syntaxTree = filter.parse(input);
+        if (syntaxTree) {
+            exit = (syntaxTree->execute() == -1);
+            delete syntaxTree;
+        }
     }
    
     return 0;

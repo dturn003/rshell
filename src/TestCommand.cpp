@@ -1,13 +1,56 @@
+#include "TestCommand.h"
+
 #include <sys/stat.h>
 #include <iostream>
 #include <stdio.h>
 
-#include "TestCommand.h"
+TestCommand::TestCommand(int length, const std::vector<std::string> &v) {
+    //int length = v.size();
+    if (length == 4) {//input as []: flag path or test path
+        if (v.at(3) == "]") {
+            flag = v.at(1);
+            path = v.at(2);
+            errorMessage = "";
+        }
+        else {
+            errorMessage = "Expected token ']'";
+        }
+    }
+    else if (length == 3) {//input as [] with implicit flag: path
+        if (v.at(2) == "]") {
+            flag = "-e";
+            path = v.at(1);
+            errorMessage =  "";
+        }
+        else {
+            errorMessage = "Expected token ']'";
+        }
+    }
+    else {
+        errorMessage = "Invalid argument length";
+    }
+}
+    
+TestCommand::TestCommand(const std::vector<std::string> &v) {
+    int length = v.size();
+    if(length == 3) { //input like regular command: test flag path
+        flag = v.at(1);
+        path = v.at(2);
+        errorMessage = "";
+    }
+    else if (length == 2) {
+        flag = "-e";
+        path = v.at(1);
+        errorMessage = "";
+    }
+    else { //any other amount of input is wrong
+        errorMessage = "Invalid argument length";
+    }
+}
 
 int TestCommand::execute() {
-    if (!validArgs)
-    {
-        cout << "Invalid argument length" << endl;
+    if (errorMessage.size() != 0) {
+        std::cout << errorMessage << std::endl;
         return 0;
     }
     struct stat buf; //struct returned by stat function
@@ -16,14 +59,14 @@ int TestCommand::execute() {
     /*
     if (statOut < 0) {
         perror("stat() failed");
-        cout << ("False") << endl;
+        std::cout << ("False") << std::endl;
     }
     */
     
     //if directory/file doesn't exist
     //functions same way for each flag
     if (statOut != 0) {
-            cout << "(False)" << endl;
+            std::cout << "(False)" << std::endl;
             perror("stat() failed");
             return 0;
     }
@@ -31,31 +74,31 @@ int TestCommand::execute() {
     //if directory/file does exist
     //tests flag condition
     if (flag == "-e") {
-        cout << "(True)" << endl;
+        std::cout << "(True)" << std::endl;
         return 1;
     }
     else if (flag == "-f") { //tests if regular file
         if(S_ISREG(buf.st_mode)) {//is regular file macro
-            cout << "(True)" << endl;
+            std::cout << "(True)" << std::endl;
             return 1;
         }
         else {
-            cout << "(False)" << endl;
+            std::cout << "(False)" << std::endl;
             return 0;
         }
     }
     else if (flag == "-d") { //tests if directory
         if(S_ISDIR(buf.st_mode)) {//is directory macro
-            cout << "(True)" << endl;
+            std::cout << "(True)" << std::endl;
             return 1;
         }
         else {
-            cout << "(False)" << endl;
+            std::cout << "(False)" << std::endl;
             return 0;
         }
     }
     else {
-        cout << "Improper flag: test command" << endl;
+        std::cout << flag << ": Improper flag" << std::endl;
         return 0;
     }
 }

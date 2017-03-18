@@ -1,7 +1,6 @@
 #include "AndConnector.h"
 
-int AndConnector::execute()
-{
+int AndConnector::execute() {
         int out = 0;
         if(left) {
             out = left->execute();
