@@ -8,7 +8,6 @@ InputConnector::InputConnector(BaseAction* command, string file) {
     this->command = command;
     this->file = new char[file.size() + 1];
     strcpy(this->file, file.c_str());
-    this->file[file.size()+1] = NULL;
 }
 InputConnector::~InputConnector() {
     delete command;

@@ -8,7 +8,6 @@ OutputConnector::OutputConnector(BaseAction* command, string file) {
     this->command = command;
     this->file = new char[file.size() + 1];
     strcpy(this->file, file.c_str());
-    this->file[file.size()+1] = NULL;
 }
 OutputConnector::~OutputConnector() {
     delete command;
