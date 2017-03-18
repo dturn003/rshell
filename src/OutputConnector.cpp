@@ -19,8 +19,8 @@ int OutputConnector::execute() {
         return 0;
     }
     else if (pid == 0) { //child proccess
-        close(1);//close std input
-        dup(fd);//replace stdinput with our file
+        close(1);//close std output
+        dup(fd);//replace stdout with our file
         command->execute();
         close(fd);
         exit(1);
