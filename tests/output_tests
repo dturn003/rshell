@@ -1,0 +1,5 @@
+echo BBBB > newfile
+echo overwrite > newfile
+echo CCCC > cat
+cat makefile > wow
+exit

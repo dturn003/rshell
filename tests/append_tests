@@ -1,0 +1,5 @@
+echo NEW >> newfile
+echo APPENDED >> newfile
+cat hw3 >> newfile
+false || echo 88 >> newfile
+exit

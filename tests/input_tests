@@ -1,0 +1,5 @@
+cat < hw2
+cat < makefile | tr A-Z a-z
+cat < doesnexit
+cat < echo bbbbb
+exit
