@@ -1,0 +1,4 @@
+cat < makefile | tr A-Z a-z | tee newOutputFile1 | tr a-z A-Z > newOutputFile2
+echo BBB | tr A-Z a-z | cat
+echo abcd | cat > newfile3
+exit
