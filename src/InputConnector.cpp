@@ -26,7 +26,7 @@ int InputConnector::execute() {
     }
     else if (pid == 0) { //child proccess
         close(0);//close std input
-        dup(fd);
+        dup(fd);//replace stdinput with our file
         command->execute();
         close(fd);
         exit(1);
