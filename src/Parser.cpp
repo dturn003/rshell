@@ -189,7 +189,7 @@ BaseAction* Parser::parse(const std::string &input)
             }
             else if (link == '<') {
                 pushCommand(operands, args); 
-                Tok::iterator file_ptr = getNext(it, last);
+                Tok::iterator file_ptr = getNext(++it, last);
                 if (operands.empty() || file_ptr == last) {
                     std::cout << "Unexpected token near '<'" << std::endl;
                     deleteStacks(operands, connects);
@@ -216,7 +216,7 @@ BaseAction* Parser::parse(const std::string &input)
                 } */
                 //else {
                     pushCommand(operands, args); 
-                    Tok::iterator file_ptr = getNext(it, last);
+                    Tok::iterator file_ptr = getNext(++it, last);
                     if (operands.empty() || file_ptr == last) {
                         std::cout << "Unexpected token near '>'" << std::endl;
                         deleteStacks(operands, connects);
