@@ -34,7 +34,7 @@ int BinCommand::execute() { //returns 0 if command failed, 1 if command succeede
     else if (pid == 0) { //child process
         execvp(args[0], args); //run program in bin
         perror("Command has failed");
-        return 0;
+        exit(1);
     }
     else { //parent
         int status; //status of child process
