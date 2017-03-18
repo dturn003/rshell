@@ -3,8 +3,8 @@ CC_FLAGS=-Wall -Werror -ansi -pedantic -std=c++11
 
 all : rshell
 
-rshell : bin AlwaysConnector AndConnector main BinCommand OrConnector Parser ExitCommand TestCommand PipeConnector
-	$(CC) $(CC_FLAGS) src/AlwaysConnector.o src/PipeConnector.o src/main.o src/AndConnector.o src/BinCommand.o src/OrConnector.o src/Parser.o src/ExitCommand.o src/TestCommand.o -o bin/rshell
+rshell : bin AlwaysConnector AndConnector main BinCommand OrConnector Parser ExitCommand TestCommand PipeConnector InputConnector OutputConnector
+	$(CC) $(CC_FLAGS) src/AlwaysConnector.o src/PipeConnector.o src/main.o src/AndConnector.o src/BinCommand.o src/OrConnector.o src/Parser.o src/ExitCommand.o src/TestCommand.o src/InputConnector.o src/OutputConnector.o -o bin/rshell
 
 AlwaysConnector : src/AlwaysConnector.cpp src/AlwaysConnector.h
 	$(CC) $(CC_FLAGS) -c  src/AlwaysConnector.cpp -o src/AlwaysConnector.o
@@ -32,6 +32,12 @@ TestCommand : src/TestCommand.cpp src/TestCommand.h
 	
 PipeConnector : src/PipeConnector.h src/PipeConnector.cpp
 	$(CC) $(CC_FLAGS) -c  src/PipeConnector.cpp -o src/PipeConnector.o
+	
+InputConnector : src/InputConnector.h src/InputConnector.cpp
+	$(CC) $(CC_FLAGS) -c  src/InputConnector.cpp -o src/InputConnector.o
+	
+OutputConnector : src/OutputConnector.h src/OutputConnector.cpp
+	$(CC) $(CC_FLAGS) -c  src/OutputConnector.cpp -o src/OutputConnector.o
 
 bin :
 	mkdir -p  bin
