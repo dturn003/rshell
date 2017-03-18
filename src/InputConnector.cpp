@@ -2,18 +2,10 @@
 
 #include <unistd.h>
 #include <fcntl.h>
-#include <string.h>
 #include <sys/wait.h>
 
-InputConnector::InputConnector(BaseAction* command, string file) {
-    this->command = command;
-    this->file = new char[file.size() + 1];
-    strcpy(this->file, file.c_str());
-}
-InputConnector::~InputConnector() {
-    delete command;
-    delete[] file;
-}
+InputConnector::InputConnector(BaseAction* command, string file) : Redirector(command, file) { }
+
 int InputConnector::execute() {
     int fd = open(file, O_RDONLY);
     if(fd < 0) {

@@ -1,18 +1,14 @@
 #ifndef OUTPUTCONNECTOR_H
 #define OUTPUTCONNECTOR_H
 
-#include "BaseAction.h"
+#include "Redirector.h"
 #include <string>
 
 using namespace std;
 
-class OutputConnector : public BaseAction {
-    private:
-        BaseAction* command;
-        char* file;
+class OutputConnector : public Redirector {
     public:
         OutputConnector(BaseAction* command, string file);
-        ~OutputConnector();
         int execute();
     
 };

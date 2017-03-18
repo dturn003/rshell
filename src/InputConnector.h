@@ -1,18 +1,14 @@
 #ifndef INPUTCONNECTOR_H
 #define INPUTCONNECTOR_H
 
-#include "BaseAction.h"
+#include "Redirector.h"
 
 #include <string>
 using namespace std;
 
-class InputConnector : public BaseAction {
-    private:
-        BaseAction* command;
-        char* file;
+class InputConnector : public Redirector {
     public:
         InputConnector(BaseAction* command, string file);
-        ~InputConnector();
         int execute();
         
 };
