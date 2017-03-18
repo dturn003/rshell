@@ -203,18 +203,23 @@ BaseAction* Parser::parse(const std::string &input)
                 }
             }
             else if (link == '>') {
-                /*
                 if (checkDouble('>', it, last)) {
                     ++it; ++it;
                     pushCommand(operands, args);
-                    if (!cycle(connects, operands)) {
+                    Tok::iterator file_ptr = getNext(++it, last);
+                    if (operands.empty() || file_ptr == last) {
                         std::cout << "Unexpected token near '>>'" << std::endl;
                         deleteStacks(operands, connects);
                         return nullptr;
                     }
-                    connects.push(new OutputReConnector); //pushes OrConnector onto connects 
-                } */
-                //else {
+                    else {
+                        BaseAction* singleOp = operands.top();
+                        operands.pop();
+                        operands.push(new AppendConnector(singleOp, *file_ptr));
+                        it = file_ptr;
+                    }
+                }
+                else {
                     pushCommand(operands, args); 
                     Tok::iterator file_ptr = getNext(++it, last);
                     if (operands.empty() || file_ptr == last) {
@@ -228,6 +233,7 @@ BaseAction* Parser::parse(const std::string &input)
                         operands.push(new OutputConnector(singleOp, *file_ptr));
                         it = file_ptr;
                     }
+                }
             }
             else { //Else, add to args
                 args.push_back(*it);

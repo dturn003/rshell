@@ -13,6 +13,7 @@
 #include "PipeConnector.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
+#include "AppendConnector.h"
 
 //Libraries
 #include <string>
