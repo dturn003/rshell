@@ -84,6 +84,16 @@ bool Parser::checkDouble(char link, Tok::iterator it, Tok::iterator last)
     }
 }
 
+boost::tokenizer<boost::char_separator<char> >::iterator Parser::getNext(Tok::iterator it, Tok::iterator last) {
+    while(it != last) {
+        if ((*it) != "") { //if not blank token
+            return it;
+        }
+        ++it;
+    }
+    return last;
+}
+
 BaseAction* Parser::parse(const std::string &input)
 {
     //initializes two std::stacks for Djikstra's shunting yard algorithm
@@ -91,7 +101,7 @@ BaseAction* Parser::parse(const std::string &input)
     std::stack<BaseAction*> operands; //Commands/Connectors
     std::vector<std::string> args; //stores std::vector of arguments for reading in commands
     
-    boost::char_separator<char> sep(" ", ";&|#()", boost::keep_empty_tokens); //splits up std::string input into tokens of connector and commands/arguments
+    boost::char_separator<char> sep(" ", ";&|#()<>", boost::keep_empty_tokens); //splits up std::string input into tokens of connector and commands/arguments
     Tok tokens(input, sep); //list of tokens
     Tok::iterator last = tokens.end(); //ending token
     
@@ -176,6 +186,48 @@ BaseAction* Parser::parse(const std::string &input)
                     }
                     connects.push(new PipeConnector()); //pushes PipeConnector onto connects
                 }
+            }
+            else if (link == '<') {
+                pushCommand(operands, args); 
+                Tok::iterator file_ptr = getNext(it, last);
+                if (operands.empty() || file_ptr == last) {
+                    std::cout << "Unexpected token near '<'" << std::endl;
+                    deleteStacks(operands, connects);
+                    return nullptr; //std::stack was empty, Connector has no children. process failed.
+                }
+                else {
+                    BaseAction* singleOp = operands.top();
+                    operands.pop();
+                    operands.push(new InputConnector(singleOp, *file_ptr));
+                    it = file_ptr;
+                }
+            }
+            else if (link == '>') {
+                /*
+                if (checkDouble('>', it, last)) {
+                    ++it; ++it;
+                    pushCommand(operands, args);
+                    if (!cycle(connects, operands)) {
+                        std::cout << "Unexpected token near '>>'" << std::endl;
+                        deleteStacks(operands, connects);
+                        return nullptr;
+                    }
+                    connects.push(new OutputReConnector); //pushes OrConnector onto connects 
+                } */
+                //else {
+                    pushCommand(operands, args); 
+                    Tok::iterator file_ptr = getNext(it, last);
+                    if (operands.empty() || file_ptr == last) {
+                        std::cout << "Unexpected token near '>'" << std::endl;
+                        deleteStacks(operands, connects);
+                        return nullptr; //std::stack was empty, Connector has no children. process failed.
+                    }
+                    else {
+                        BaseAction* singleOp = operands.top();
+                        operands.pop();
+                        operands.push(new OutputConnector(singleOp, *file_ptr));
+                        it = file_ptr;
+                    }
             }
             else { //Else, add to args
                 args.push_back(*it);

@@ -11,6 +11,8 @@
 #include "OrConnector.h"
 #include "AlwaysConnector.h"
 #include "PipeConnector.h"
+#include "InputConnector.h"
+#include "OutputConnector.h"
 
 //Libraries
 #include <string>
@@ -23,6 +25,8 @@ class Parser
     private:
         typedef boost::tokenizer<boost::char_separator<char > > Tok; //defines tokenizer object
         BaseAction* LEFT = nullptr; //represents Left parenthesis, means of identifying '(' in Connector stack
+        
+        boost::tokenizer<boost::char_separator<char> >::iterator getNext(Tok::iterator it, Tok::iterator last);
         
         void deleteStacks(std::stack<BaseAction*> & operands, std::stack<BaseAction*> & connects);
         
