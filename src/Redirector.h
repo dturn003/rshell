@@ -21,7 +21,7 @@ class Redirector : public BaseAction {
             delete command;
             delete[] file;
         }
-        virtual int execute();
+        virtual int execute() = 0;
     
 };
 
